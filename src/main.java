@@ -11,7 +11,6 @@
 
 import com.alee.laf.WebLookAndFeel;
 import javax.swing.SwingUtilities;
-//import views.mainFrame;
 import views.VFormLogin;
 
 public class main 
@@ -23,7 +22,6 @@ public class main
                 // Install WebLaF as application L&F
                 WebLookAndFeel.install ();
                 new VFormLogin();
-//                new mainFrame().setVisible(true);
             }
         });
     }
