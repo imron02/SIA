@@ -18,4 +18,5 @@ build/
 build.xml
 !nbproject/project.properties
 !nbproject/project.xml
+bin
 
