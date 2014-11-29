@@ -60,6 +60,6 @@ else:win32:CONFIG(debug, debug|release): LIBS += \
 win32:INCLUDEPATH += \
     $$PWD/../../mongo/mongo-client/include \
     C:/Boost/include/boost-1_56
-win32DEPENDPATH += \
+win32:DEPENDPATH += \
     $$PWD/../../mongo/mongo-client/include\
     C:/Boost/include/boost-1_56
