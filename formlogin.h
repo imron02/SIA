@@ -27,11 +27,11 @@ class FormLogin : public QDialog, public configApp::Config
     Q_OBJECT
 
 public:
-    explicit FormLogin(QWidget* parent);
+    explicit FormLogin(QWidget* parent = 0);
     ~FormLogin();
 
 private slots:
-//    void OnQuit();
+    void OnQuit();
     void OnLogin();
 
 private:

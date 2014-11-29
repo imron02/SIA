@@ -13,6 +13,12 @@
 
 #include <iostream>
 #include <cstdlib>
+
+// MongoDB Connection
+#ifdef _WIN32
+    #include <WinSock2.h>
+#endif
+
 #include "mongo/client/dbclient.h" // for the driver
 
 namespace configApp
@@ -28,6 +34,7 @@ namespace configApp
         mongo::DBClientConnection c;
 
         auto ConnectDB() -> int;
+        void DisconnectDB();
     };
 }
 

@@ -16,6 +16,10 @@ using namespace configApp;
 
 int Config::ConnectDB()
 {
+    // if use MSVC compiler
+    #ifdef _WIN32
+        client::initialize();
+    #endif // WIN32
     try {
         c.connect("localhost");
     } catch (const DBException &e) {
@@ -23,6 +27,11 @@ int Config::ConnectDB()
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
+}
+
+void Config::DisconnectDB()
+{
+    client::shutdown();
 }
 
 Config::~Config() {}

@@ -11,7 +11,11 @@
 #include <QtWidgets>
 #include "mainwindow.h"
 
+<<<<<<< HEAD
 MainWindow::MainWindow()
+=======
+MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
+>>>>>>> 5401ce1ae65b8f52c140de1906727b13f55d8512
 {
     setMinimumSize(800, 600);
     statusBar()->showMessage(tr("Selamat datang di aplikasi sistem informasi akademik"));
@@ -38,6 +42,7 @@ void MainWindow::AboutQt()
 
 void MainWindow::CreateAct()
 {
+<<<<<<< HEAD
     quitAct = new QAction(QIcon::fromTheme("application-exit"), tr("&Quit"), this);
     quitAct->setShortcuts(QKeySequence::Quit);
     quitAct->setStatusTip(tr("Keluar dari aplikasi"));
@@ -58,6 +63,28 @@ void MainWindow::CreateAct()
     copyAct->setShortcuts(QKeySequence::Copy);
 
     pasteAct = new QAction(QIcon::fromTheme("edit-paste"), tr("&Paste"), this);
+=======
+    quitAct = new QAction(QIcon::fromTheme("application-exit", QIcon(":/images/exit.png")), tr("&Quit"), this);
+    quitAct->setShortcut(Qt::ALT + Qt::Key_X);
+    quitAct->setStatusTip(tr("Keluar dari aplikasi"));
+    connect(quitAct, SIGNAL(triggered()), this, SLOT(close()));
+
+    undoAct = new QAction(QIcon::fromTheme("edit-undo", QIcon(":/images/undo.png")), tr("&Undo"), this);
+    undoAct->setShortcuts(QKeySequence::Undo);
+
+    redoAct = new QAction(QIcon::fromTheme("edit-redo", QIcon(":/images/redo.png")), tr("&Redo"), this);
+    redoAct->setShortcuts(QKeySequence::Redo);
+
+    cutAct = new QAction(QIcon::fromTheme("edit-cut", QIcon(":/images/cut.png")), tr("Cu&t"), this);
+    cutAct->setStatusTip(tr("Memotong konten pilihan saat ini ke clipboard"));
+    cutAct->setShortcuts(QKeySequence::Cut);
+
+    copyAct = new QAction(QIcon::fromTheme("edit-copy", QIcon(":/images/copy.png")), tr("&Copy"), this);
+    copyAct->setStatusTip(tr("Menyalin konten pilihan saat ini ke clipboard"));
+    copyAct->setShortcuts(QKeySequence::Copy);
+
+    pasteAct = new QAction(QIcon::fromTheme("edit-paste", QIcon(":/images/paste.png")), tr("&Paste"), this);
+>>>>>>> 5401ce1ae65b8f52c140de1906727b13f55d8512
     pasteAct->setStatusTip(tr("Paste konten pilihan saat ini"));
     pasteAct->setShortcuts(QKeySequence::Paste);
 
@@ -94,4 +121,11 @@ void MainWindow::CreateMenus()
     helpMenu->addAction(aboutQtAct);
 }
 
+<<<<<<< HEAD
 MainWindow::~MainWindow() {}
+=======
+MainWindow::~MainWindow()
+{
+    delete helpMenu;
+}
+>>>>>>> 5401ce1ae65b8f52c140de1906727b13f55d8512

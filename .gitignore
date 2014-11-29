@@ -1,0 +1,46 @@
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# IDE
+Debug/
+Release/
+*-backup
+*.mk
+*.project
+
+# Code::Block
+*.cbp
+*.depend
+*.layout
+
+# Visual Studio
+*.opensdf
+*.suo
+*.sdf
+*.vcxproj.filters
+*.vcxproj.user
+*.htm
+*.aps
+
+# Qt Creator
+*.user.*
+*.user

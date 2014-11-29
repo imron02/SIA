@@ -8,17 +8,21 @@
 | Licence:     GPL (General Public License) V.3
 */
 
-#include "formlogin.h"
-#include "mainwindow.h"
 #include <QApplication>
+#include <QtPlugin>
 
-int main(int argc, char *argv[])
+#include "mainwindow.h"
+#include "formlogin.h"
+
+int main(int argc, char* argv[])
 {
-    QApplication a(argc, argv);
-    MainWindow* mainWindow = new MainWindow();
-    FormLogin* formLogin = new FormLogin(mainWindow);
-    mainWindow->show();
-    formLogin->show();
+    Q_INIT_RESOURCE(application);
 
-    return a.exec();
+    QApplication app(argc, argv);
+    MainWindow* mainWindow = new MainWindow;
+    FormLogin* formLogin = new FormLogin(mainWindow);
+    formLogin->show();
+    mainWindow->show();
+
+    return app.exec();
 }

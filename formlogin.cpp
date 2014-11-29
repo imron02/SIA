@@ -14,7 +14,7 @@
 using namespace std;
 using namespace configApp;
 
-FormLogin::FormLogin(QWidget *parent) : QDialog(parent)
+FormLogin::FormLogin(QWidget* parent) : QDialog(parent)
 {
     setFixedSize(300, 120);
     setWindowTitle("Form Login");
@@ -29,10 +29,10 @@ FormLogin::FormLogin(QWidget *parent) : QDialog(parent)
     quitButton = new QPushButton("Quit");
 
 
-    QVBoxLayout *vbox = new QVBoxLayout(this);
-    QHBoxLayout *hbox1 = new QHBoxLayout();
-    QHBoxLayout *hbox2 = new QHBoxLayout();
-    QHBoxLayout *hbox3 = new QHBoxLayout();
+    QVBoxLayout* vbox = new QVBoxLayout(this);
+    QHBoxLayout* hbox1 = new QHBoxLayout();
+    QHBoxLayout* hbox2 = new QHBoxLayout();
+    QHBoxLayout* hbox3 = new QHBoxLayout();
 
     hbox1->addWidget(userLabel, 1);
     hbox1->addWidget(userLineEdit, 2);
@@ -46,14 +46,19 @@ FormLogin::FormLogin(QWidget *parent) : QDialog(parent)
     vbox->addLayout(hbox2);
     vbox->addLayout(hbox3);
 
-    connect(quitButton, SIGNAL(clicked()), this, SLOT(reject()));
+    connect(quitButton, SIGNAL(clicked()), this, SLOT(OnQuit()));
     connect(loginButton, SIGNAL(clicked()), this, SLOT(OnLogin()));
 }
 
 void FormLogin::reject()
 {
-    reject();
-//    parentWidget()->close();
+    OnQuit();
+}
+
+void FormLogin::OnQuit()
+{
+    this->close();
+    parentWidget()->close();
 }
 
 void FormLogin::OnLogin()
@@ -66,7 +71,7 @@ void FormLogin::OnLogin()
     } else {
         MD5 md5;
         // check user in database is exist or not
-        unsigned int isAuth = FormLogin::CheckUser(username.toStdString(), md5(password.toStdString()));
+        int isAuth = CheckUser(username.toStdString(), md5(password.toStdString()));
         if (isAuth > 0) {
             // user is logged in and destroy form login
             this->accept();
@@ -74,21 +79,22 @@ void FormLogin::OnLogin()
             QMessageBox::information(this, tr("Peringatan!"), "Username atau Password Salah");
         }
     }
+    // Disconnect database
+    Config::DisconnectDB();
 }
 
 int FormLogin::CheckUser(string username, string password)
 {
     // initialization user
-    unsigned int userCount = 0;
+    int n = 0;
     // if connect success
-    if (Config::ConnectDB() == 0) {
-        // check user in database
-        unsigned long long n = c.count("sia.users", BSON("username" << username << "password" << password));
-        userCount = (unsigned int) n;
-    } else {
+    if (Config::ConnectDB() > 0) {
         QMessageBox::warning(this, "Error", "Database tidak terkoneksi");
+        return n;
     }
-    return userCount;
+    // check user in database
+    n = c.count("sia.users", BSON("username" << username << "password" << password));
+    return n;
 }
 
 FormLogin::~FormLogin() {}
