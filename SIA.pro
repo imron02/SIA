@@ -8,11 +8,11 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets webkitwidgets
 
-RESOURCES += \
-    application.qrc
-
 TARGET = SIA
 TEMPLATE = app
+
+win32:RESOURCES += \
+    application.qrc
 
 win32: QMAKE_CXXFLAGS += /wd4100
 
@@ -30,15 +30,15 @@ LIBS += -pthread\
 
 SOURCES += main.cpp\
     mainwindow.cpp \
-    library/md5.cpp \
+    formlogin.cpp \
     config.cpp \
-    formlogin.cpp
+    library/md5.cpp
 
 HEADERS  += \
-    mainwindow.h \
-    library/md5.h \
+    formlogin.h \
     config.h \
-    formlogin.h
+    mainwindow.h \
+    library/md5.h
 
 FORMS    +=
 
@@ -57,9 +57,9 @@ else:win32:CONFIG(debug, debug|release): LIBS += \
     -LC:/Boost/lib/ -lboost_date_time-vc120-mt-gd-1_56 \
     -LC:/Boost/lib/ -lboost_chrono-vc120-mt-gd-1_56
 
-INCLUDEPATH += \
+win32:INCLUDEPATH += \
     $$PWD/../../mongo/mongo-client/include \
     C:/Boost/include/boost-1_56
-DEPENDPATH += \
+win32:DEPENDPATH += \
     $$PWD/../../mongo/mongo-client/include\
     C:/Boost/include/boost-1_56

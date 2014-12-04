@@ -44,3 +44,4 @@ Release/
 # Qt Creator
 *.user.*
 *.user
+*.*.user
