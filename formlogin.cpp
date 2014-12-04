@@ -97,4 +97,12 @@ int FormLogin::CheckUser(string username, string password)
     return n;
 }
 
-FormLogin::~FormLogin() {}
+FormLogin::~FormLogin()
+{
+    delete userLabel;
+    delete passLabel;
+    delete userLineEdit;
+    delete passLineEdit;
+    delete loginButton;
+    delete quitButton;
+}
