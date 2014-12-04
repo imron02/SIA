@@ -12,11 +12,14 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QWebView>
+#include <QDebug>
+
+#include <iostream>
 
 QT_BEGIN_NAMESPACE
 class QAction;
 class QMenu;
-class QPlainTextEdit;
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -24,20 +27,24 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget* parent = 0);
+    explicit MainWindow();
     ~MainWindow();
 
 private slots:
     void AboutApp();
+    void CloseTab(int);
+    void FullScreenToggle();
 
 private:
     void CreateAct();
     void CreateMenus();
-    void AboutQt();
+    void CreateToolBars();
+    void CreateTabWidgets();
 
     QMenu* fileMenu;
     QMenu* editMenu;
     QMenu* helpMenu;
+    QMenu* windowMenu;
     QAction* undoAct;
     QAction* redoAct;
     QAction* quitAct;
@@ -47,6 +54,14 @@ private:
     QAction* deleteAct;
     QAction* aboutAct;
     QAction* aboutQtAct;
+    QAction* backAct;
+    QAction* nextAct;
+    QAction* showFullScreenAct;
+    QAction* editToolBarAct;
+    QAction* fileToolBarAct;
+    QToolBar* fileToolBar;
+    QToolBar* editToolBar;
+    QTabWidget* page;
 };
 
 #endif // MAINWINDOW_H
