@@ -7,5 +7,9 @@
         <file>images/redo.png</file>
         <file>images/save.png</file>
         <file>images/undo.png</file>
+        <file>images/arrow-left.png</file>
+        <file>images/arrow-right.png</file>
+        <file>images/bookmark.png</file>
+        <file>images/delete.png</file>
     </qresource>
 </RCC>
