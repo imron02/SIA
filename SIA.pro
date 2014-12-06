@@ -11,8 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = SIA
 TEMPLATE = app
 
-win32:RESOURCES += \
-    application.qrc
+win32:RESOURCES +=
 
 win32: QMAKE_CXXFLAGS += /wd4100
 

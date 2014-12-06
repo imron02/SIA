@@ -79,8 +79,10 @@ void FormLogin::OnLogin()
             QMessageBox::information(this, tr("Peringatan!"), "Username atau Password Salah");
         }
     }
-    // Disconnect database
-    Config::DisconnectDB();
+    #ifdef _WIN32
+        // Disconnect database
+        Config::DisconnectDB();
+    #endif _WIN32
 }
 
 int FormLogin::CheckUser(string username, string password)

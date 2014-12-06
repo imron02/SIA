@@ -16,7 +16,9 @@
 
 int main(int argc, char* argv[])
 {
-    Q_INIT_RESOURCE(application);
+    #ifdef _WIN32
+        Q_INIT_RESOURCE(application);
+    #endif // _WIN32
 
     QApplication app(argc, argv);
     MainWindow* mainWindow = new MainWindow;

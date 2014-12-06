@@ -19,7 +19,7 @@ int Config::ConnectDB()
     // if use MSVC compiler
     #ifdef _WIN32
         client::initialize();
-    #endif // WIN32
+    #endif // _WIN32
     try {
         c.connect("localhost");
     } catch (const DBException &e) {
@@ -31,7 +31,9 @@ int Config::ConnectDB()
 
 void Config::DisconnectDB()
 {
-    client::shutdown();
+    #ifdef _WIN32
+        client::shutdown();
+    #endif // _WIN32
 }
 
 Config::~Config() {}
