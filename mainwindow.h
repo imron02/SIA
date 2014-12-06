@@ -12,7 +12,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QWebView>
 #include <QDebug>
 
 #include <iostream>
@@ -20,6 +19,7 @@
 QT_BEGIN_NAMESPACE
 class QAction;
 class QMenu;
+class QTabWidget;
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow

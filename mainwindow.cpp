@@ -81,7 +81,6 @@ void MainWindow::CreateAct()
     showFullScreenAct = new QAction(tr("Full screen"), this);
     showFullScreenAct->setStatusTip(tr("Tampilkan layar secara penuh"));
     showFullScreenAct->setCheckable(true);
-    connect(showFullScreenAct, SIGNAL(triggered()), this, SLOT(FullScreenToggle()));
 }
 
 void MainWindow::CreateMenus()
@@ -137,9 +136,7 @@ void MainWindow::FullScreenToggle()
 
 void MainWindow::CreateTabWidgets()
 {
-
-    QWebView* webView = new QWebView;
-
+    QWidget* window = new QWidget();
     QString string = "<html><body>"
                      "<h3>Selamat Datang di Aplikasi Sistem Informasi Akademik</h3>"
                      "<br/><b>Mengenai aplikasi</b><br/>"
@@ -155,49 +152,32 @@ void MainWindow::CreateTabWidgets()
                      "</ul>"
                      "<p>See README.txt for more information.</p>"
                      "</body></html>";
-    webView->setHtml(string);
+    QLabel* label = new QLabel(string);
+
+    QVBoxLayout* vbox = new QVBoxLayout(window);
+    vbox->addWidget(label);
+    vbox->addStretch(1);
+
+    window->setLayout(vbox);
 
     // add widget to the menu utama tab
-    page->addTab(webView, tr("Menu Utama"));
+    page->addTab(window, tr("Menu Utama"));
     page->setTabsClosable(true);
+    page->addTab(new QLabel("TabA"), "TabA");
+    page->addTab(new QLabel("TabB"), "TabB");
+    page->addTab(new QLabel("TabC"), "TabC");
 
+    connect(showFullScreenAct, SIGNAL(triggered()), this, SLOT(FullScreenToggle()));
     // add tab widget to the main window
     setCentralWidget(page);
+
 }
 
 void MainWindow::CloseTab(int index)
 {
-    // Remove the tab using removeTab(). Be aware that the
-    // page widget itself is not deleted!
-    page->removeTab(index);
-
-    // OR (do NOT do both)
-
     // Delete the page widget, which automatically removes
     // the tab as well.
     delete page->widget(index);
 }
 
-MainWindow::~MainWindow()
-{
-    delete fileMenu;
-    delete editMenu;
-    delete helpMenu;
-    delete windowMenu;
-    delete undoAct;
-    delete redoAct;
-    delete quitAct;
-    delete cutAct;
-    delete copyAct;
-    delete pasteAct;
-    delete deleteAct;
-    delete aboutAct;
-    delete aboutQtAct;
-    delete backAct;
-    delete nextAct;
-    delete editToolBarAct;
-    delete fileToolBarAct;
-    delete fileToolBar;
-    delete editToolBar;
-    delete page;
-}
+MainWindow::~MainWindow() {}
