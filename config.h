@@ -27,7 +27,7 @@ namespace configApp
     {
     public:
         // Destructor
-        ~Config();
+        virtual ~Config();
 
     protected:
         // Mongo connection variable

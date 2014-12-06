@@ -11,13 +11,20 @@
 #include <QtWidgets>
 #include "mainwindow.h"
 
-MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
+MainWindow::MainWindow() : QMainWindow()
 {
     setMinimumSize(800, 600);
     statusBar()->showMessage(tr("Selamat datang di aplikasi sistem informasi akademik"));
 
     CreateAct();
+    CreateToolBars();
     CreateMenus();
+
+    page = new QTabWidget();
+    CreateTabWidgets();
+
+    // event for close tab page
+    connect(page, SIGNAL(tabCloseRequested(int)), this, SLOT(CloseTab(int)));
 }
 
 void MainWindow::AboutApp()
@@ -26,14 +33,6 @@ void MainWindow::AboutApp()
              tr("The <b>Application</b> example demonstrates how to "
                 "write modern GUI applications using Qt, with a menu bar, "
                 "toolbars, and a status bar."));
-}
-
-void MainWindow::AboutQt()
-{
-    QMessageBox::about(this, tr("About Application"),
-                 tr("The <b>Application</b> example demonstrates how to "
-                    "write modern GUI applications using Qt, with a menu bar, "
-                    "toolbars, and a status bar."));
 }
 
 void MainWindow::CreateAct()
@@ -61,11 +60,11 @@ void MainWindow::CreateAct()
     pasteAct->setStatusTip(tr("Paste konten pilihan saat ini"));
     pasteAct->setShortcuts(QKeySequence::Paste);
 
-    deleteAct = new QAction(QIcon::fromTheme("edit-delete"), tr("&Delete"), this);
+    deleteAct = new QAction(QIcon::fromTheme("edit-delete", QIcon(":/images/delete.png")), tr("&Delete"), this);
     deleteAct->setStatusTip(tr("Menghapus konten pilihan saat ini"));
     deleteAct->setShortcuts(QKeySequence::Delete);
 
-    aboutAct = new QAction(QIcon::fromTheme("help-about"), tr("&About"), this);
+    aboutAct = new QAction(QIcon::fromTheme("help-about", QIcon(":/images/bookmark.png")), tr("&About"), this);
     aboutAct->setStatusTip("Tampilkan tentang aplikasi");
     aboutAct->setShortcut(Qt::Key_F1);
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(AboutApp()));
@@ -73,6 +72,15 @@ void MainWindow::CreateAct()
     aboutQtAct = new QAction(QIcon::fromTheme("face-cool"), tr("About Qt"), this);
     aboutQtAct->setStatusTip("Tampilkan tentang pustaka Qt");
     connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+
+    backAct = new QAction(QIcon(":/images/arrow-left.png"), tr("Back"), this);
+    backAct->setStatusTip(tr("Kembali ke halaman sebelumnya"));
+    nextAct = new QAction(QIcon(":/images/arrow-right.png"), tr("Next"), this);
+    nextAct->setStatusTip(tr("Pergi ke halaman selanjutnya"));
+
+    showFullScreenAct = new QAction(tr("Full screen"), this);
+    showFullScreenAct->setStatusTip(tr("Tampilkan layar secara penuh"));
+    showFullScreenAct->setCheckable(true);
 }
 
 void MainWindow::CreateMenus()
@@ -92,6 +100,84 @@ void MainWindow::CreateMenus()
     helpMenu = menuBar()->addMenu(tr("&Help"));
     helpMenu->addAction(aboutAct);
     helpMenu->addAction(aboutQtAct);
+
+    windowMenu = menuBar()->addMenu(tr("&Window"));
+    windowMenu->addAction(fileToolBarAct);
+    windowMenu->addAction(editToolBarAct);
+    windowMenu->addAction(showFullScreenAct);
+}
+
+void MainWindow::CreateToolBars()
+{
+    fileToolBar = addToolBar("File toolbar");
+    fileToolBarAct = fileToolBar->toggleViewAction();
+    fileToolBar->addAction(backAct);
+    fileToolBar->addAction(nextAct);
+    fileToolBar->addAction(undoAct);
+    fileToolBar->addAction(redoAct);
+    fileToolBar->toggleViewAction();
+    fileToolBar->setAllowedAreas(Qt::TopToolBarArea | Qt::LeftToolBarArea);
+
+    editToolBar = addToolBar(tr("Edit toolbar"));
+    editToolBarAct = editToolBar->toggleViewAction();
+    editToolBar->addAction(cutAct);
+    editToolBar->addAction(copyAct);
+    editToolBar->addAction(pasteAct);
+    editToolBar->setAllowedAreas(Qt::TopToolBarArea | Qt::LeftToolBarArea);
+}
+
+void MainWindow::FullScreenToggle()
+{
+    if(showFullScreenAct->isChecked())
+        this->showFullScreen();
+    else
+        this->showNormal();
+}
+
+void MainWindow::CreateTabWidgets()
+{
+    QWidget* window = new QWidget();
+    QString string = "<html><body>"
+                     "<h3>Selamat Datang di Aplikasi Sistem Informasi Akademik</h3>"
+                     "<br/><b>Mengenai aplikasi</b><br/>"
+                     "<p>Aplikasi sistem informasi akademik adalah aplikasi yang ditunjukkan untuk"
+                     "membantu sekolah dalam mengolah data-data akademik secara cepat dan mudah.</p>"
+                     "<p><b>Fitur</b></p>"
+                     "<p>Dengan aplikasi SIA, pihak sekolah dapat melakukan berbagai hal seperti:</p>"
+                     "<ul>"
+                     "<li>Mudah mengolah data-data guru</li>"
+                     "<li>Mudah mengolah data-data siswa</li>"
+                     "<li>Fitur pembayaran SPP</li>"
+                     "<li>Fitur penjurusan siswa</li>"
+                     "</ul>"
+                     "<p>See README.txt for more information.</p>"
+                     "</body></html>";
+    QLabel* label = new QLabel(string);
+
+    QVBoxLayout* vbox = new QVBoxLayout(window);
+    vbox->addWidget(label);
+    vbox->addStretch(1);
+
+    window->setLayout(vbox);
+
+    // add widget to the menu utama tab
+    page->addTab(window, tr("Menu Utama"));
+    page->setTabsClosable(true);
+    page->addTab(new QLabel("TabA"), "TabA");
+    page->addTab(new QLabel("TabB"), "TabB");
+    page->addTab(new QLabel("TabC"), "TabC");
+
+    connect(showFullScreenAct, SIGNAL(triggered()), this, SLOT(FullScreenToggle()));
+    // add tab widget to the main window
+    setCentralWidget(page);
+
+}
+
+void MainWindow::CloseTab(int index)
+{
+    // Delete the page widget, which automatically removes
+    // the tab as well.
+    delete page->widget(index);
 }
 
 MainWindow::~MainWindow() {}
