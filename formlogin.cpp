@@ -41,7 +41,7 @@ FormLogin::FormLogin(QWidget* parent) : QDialog(parent)
     hbox3->addWidget(loginButton, 1, Qt::AlignRight);
     hbox3->addWidget(quitButton, 0, Qt::AlignRight);
 
-    vbox->addStretch(1);
+    vbox->addSpacing(1);
     vbox->addLayout(hbox1);
     vbox->addLayout(hbox2);
     vbox->addLayout(hbox3);
@@ -75,12 +75,12 @@ void FormLogin::OnLogin()
         if (isAuth > 0) {
             // user is logged in and destroy form login
             this->accept();
+            // Disconnect database
+            Config::DisconnectDB();
         } else {
             QMessageBox::information(this, tr("Peringatan!"), "Username atau Password Salah");
         }
     }
-    // Disconnect database
-    Config::DisconnectDB();
 }
 
 int FormLogin::CheckUser(string username, string password)
@@ -97,12 +97,4 @@ int FormLogin::CheckUser(string username, string password)
     return n;
 }
 
-FormLogin::~FormLogin()
-{
-    delete userLabel;
-    delete passLabel;
-    delete userLineEdit;
-    delete passLineEdit;
-    delete loginButton;
-    delete quitButton;
-}
+FormLogin::~FormLogin() {}
