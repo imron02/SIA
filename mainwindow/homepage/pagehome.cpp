@@ -1,4 +1,14 @@
-#include <mainwindow/pagehome/pagehome.h>
+/*
+|-------------------------------------------------------------------------------
+| Name:        pagehome.cpp
+| Author:      Imron Rosdiana
+| Modified by:
+| Created:     2014-12-08
+| Copyright:   (C) Copyright 2014, Imron Rosdiana
+| Licence:     GPL (General Public License) V.3
+*/
+
+#include <mainwindow/homepage/pagehome.h>
 
 PageHome::PageHome(QWidget* parent) : QWidget(parent)
 {

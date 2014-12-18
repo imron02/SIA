@@ -1,3 +1,13 @@
+/*
+|-------------------------------------------------------------------------------
+| Name:        pagehome.h
+| Author:      Imron Rosdiana
+| Modified by:
+| Created:     2014-12-08
+| Copyright:   (C) Copyright 2014, Imron Rosdiana
+| Licence:     GPL (General Public License) V.3
+*/
+
 #ifndef PAGEHOME_H
 #define PAGEHOME_H
 
