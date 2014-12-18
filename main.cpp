@@ -11,8 +11,8 @@
 #include <QApplication>
 #include <QtPlugin>
 
-#include "mainwindow.h"
-#include "formlogin.h"
+#include "mainwindow/mainwindow.h"
+#include "login/formlogin.h"
 
 int main(int argc, char* argv[])
 {
@@ -21,9 +21,9 @@ int main(int argc, char* argv[])
     #endif // _WIN32
 
     QApplication app(argc, argv);
-    MainWindow* mainWindow = new MainWindow;
-    FormLogin* formLogin = new FormLogin(mainWindow);
-    formLogin->show();
+    MainWindow* mainWindow = new MainWindow();
+//    FormLogin* formLogin = new FormLogin(mainWindow);
+//    formLogin->show();
     mainWindow->show();
 
     return app.exec();
