@@ -21,6 +21,7 @@ class QAction;
 class QMenu;
 class QTabWidget;
 class QSignalMapper;
+class QStringList;
 QT_END_NAMESPACE
 
 class MainWindow : public QMainWindow
@@ -47,6 +48,7 @@ private:
     QMenu* editMenu;
     QMenu* helpMenu;
     QMenu* windowMenu;
+    QMenu* dataMenu;
 
     QAction* undoAct;
     QAction* redoAct;
@@ -63,13 +65,12 @@ private:
     QAction* showFullScreenAct;
     QAction* editToolBarAct;
     QAction* fileToolBarAct;
+    QAction* teachersAct;
 
     QToolBar* fileToolBar;
     QToolBar* editToolBar;
 
     QTabWidget* page;
-
-    QWidget* windowHome;
 
     // signal mapper
     QSignalMapper* signalMapper;

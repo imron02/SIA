@@ -9,7 +9,11 @@
 */
 
 #include <QtWidgets>
-#include "mainwindow.h"
+#include "mainwindow/mainwindow.h"
+#include "mainwindow/homepage/pagehome.h"
+#include "mainwindow/teacherspage/teachers.h"
+
+using namespace std;
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 {
@@ -28,13 +32,9 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 
 void MainWindow::CreateAct()
 {
-    // signal mapper
-    signalMapper = new QSignalMapper(this);
-
     quitAct = new QAction(QIcon::fromTheme("application-exit", QIcon(":/images/exit.png")), tr("&Quit"), this);
     quitAct->setShortcut(Qt::ALT + Qt::Key_X);
     quitAct->setStatusTip(tr("Keluar dari aplikasi"));
-    connect(quitAct, SIGNAL(triggered()), this, SLOT(close()));
 
     undoAct = new QAction(QIcon::fromTheme("edit-undo", QIcon(":/images/undo.png")), tr("&Undo"), this);
     undoAct->setShortcuts(QKeySequence::Undo);
@@ -61,11 +61,9 @@ void MainWindow::CreateAct()
     aboutAct = new QAction(QIcon::fromTheme("help-about", QIcon(":/images/bookmark.png")), tr("&About"), this);
     aboutAct->setStatusTip("Tampilkan tentang aplikasi");
     aboutAct->setShortcut(Qt::Key_F1);
-    connect(aboutAct, SIGNAL(triggered()), this, SLOT(AboutApp()));
 
     aboutQtAct = new QAction(QIcon::fromTheme("face-cool"), tr("About Qt"), this);
     aboutQtAct->setStatusTip("Tampilkan tentang pustaka Qt");
-    connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
     backAct = new QAction(QIcon::fromTheme("go-previous", QIcon(":/images/arrow-left.png")), tr("Back"), this);
     backAct->setStatusTip(tr("Kembali ke halaman sebelumnya"));
@@ -79,10 +77,22 @@ void MainWindow::CreateAct()
     showFullScreenAct->setStatusTip(tr("Tampilkan layar secara penuh"));
     showFullScreenAct->setCheckable(true);
 
-    // signal and slot
-    connect(homeAct, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    teachersAct = new QAction(tr("Daftar &Guru"), this);
+    teachersAct->setStatusTip(tr("Tampilkan daftar-daftar guru"));
 
-    signalMapper->setMapping(homeAct, "menu utama");
+    // signal mapper
+    signalMapper = new QSignalMapper(this);
+
+    // signal and slot
+    connect(quitAct, SIGNAL(triggered()), this, SLOT(close()));
+    connect(aboutAct, SIGNAL(triggered()), this, SLOT(AboutApp()));
+    connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+    connect(homeAct, SIGNAL(triggered()), signalMapper, SLOT(map()));
+    connect(teachersAct, SIGNAL(triggered()), signalMapper, SLOT(map()));
+
+    signalMapper->setMapping(homeAct, tr("Menu Utama"));
+    connect(signalMapper, SIGNAL(mapped(QString)), this, SLOT(PageToolbar(const QString&)));
+    signalMapper->setMapping(teachersAct, tr("Daftar Guru"));
     connect(signalMapper, SIGNAL(mapped(QString)), this, SLOT(PageToolbar(const QString&)));
 
 }
@@ -100,6 +110,9 @@ void MainWindow::CreateMenus()
     editMenu->addAction(copyAct);
     editMenu->addAction(pasteAct);
     editMenu->addAction(deleteAct);
+
+    dataMenu = menuBar()->addMenu(tr("&Data"));
+    dataMenu->addAction(teachersAct);
 
     windowMenu = menuBar()->addMenu(tr("&Window"));
     windowMenu->addAction(fileToolBarAct);
@@ -133,36 +146,10 @@ void MainWindow::CreateToolBars()
 
 void MainWindow::CreateTabWidgets()
 {
-    windowHome = new QWidget();
-    QString string = "<html><body>"
-                     "<h3>Selamat Datang di Aplikasi Sistem Informasi Akademik</h3>"
-                     "<br/><b>Mengenai aplikasi</b><br/>"
-                     "<p>Aplikasi sistem informasi akademik adalah aplikasi yang ditunjukkan untuk"
-                     "membantu sekolah dalam mengolah data-data akademik secara cepat dan mudah.</p>"
-                     "<p><b>Fitur</b></p>"
-                     "<p>Dengan aplikasi SIA, pihak sekolah dapat melakukan berbagai hal seperti:</p>"
-                     "<ul>"
-                     "<li>Mudah mengolah data-data guru</li>"
-                     "<li>Mudah mengolah data-data siswa</li>"
-                     "<li>Fitur pembayaran SPP</li>"
-                     "<li>Fitur penjurusan siswa</li>"
-                     "</ul>"
-                     "<p>See README.txt for more information.</p>"
-                     "</body></html>";
-    QLabel* label = new QLabel(string);
-
-    QVBoxLayout* vbox = new QVBoxLayout(windowHome);
-    vbox->addWidget(label);
-    vbox->addStretch(1);
-
-    windowHome->setLayout(vbox);
-
     // add widget to the menu utama tab
-    page->addTab(windowHome, tr("Menu Utama"));
-    page->addTab(new QLabel("TabA"), "TabA");
-    page->addTab(new QLabel("TabB"), "TabB");
-    page->addTab(new QLabel("TabC"), "TabC");
+    page->addTab(new PageHome(this), tr("Menu Utama"));
     page->setTabsClosable(true);
+    page->tabBar()->tabButton(0, QTabBar::RightSide)->resize(0,0);
 
     // event for close tab page
     connect(page, SIGNAL(tabCloseRequested(int)), this, SLOT(CloseTab(int)));
@@ -189,20 +176,24 @@ void MainWindow::CloseTab(int index)
 
 void MainWindow::PageToolbar(const QString& pageTitle)
 {
-    qDebug() << pageTitle;
     short pageCount = page->count();
     bool pageExist = false;
-    for (short i = 0; i < pageCount; i++) {
-        if (page->tabText(i).toLower() == pageTitle) {
+    short i;
+    for (i = 0; i < pageCount; i++) {
+        if (page->tabText(i) == pageTitle) {
             page->setCurrentIndex(i);
             pageExist = true;
             break;
         }
     }
 
-//    if(!pageExist) {
-//        page->insertTab(0, windowHome, tr("Menu Utama"));
-//    }
+    // If page not exist, create new page
+    if(!pageExist) {
+        if(pageTitle == "Menu Utama")
+            page->addTab(new PageHome(this), pageTitle);
+        else
+            page->addTab(new Teachers(this), pageTitle);
+    }
 }
 
 void MainWindow::FullScreenToggle()
