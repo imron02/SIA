@@ -1,0 +1,4 @@
+#ifndef TEACHERSMODEL_H
+#define TEACHERSMODEL_H
+
+#endif // TEACHERSMODEL_H

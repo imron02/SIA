@@ -28,16 +28,21 @@ LIBS += -pthread\
 }
 
 SOURCES += main.cpp\
-    mainwindow.cpp \
-    formlogin.cpp \
-    config.cpp \
-    library/md5.cpp
+    login/formlogin.cpp \
+    library/md5.cpp \
+    mainwindow/mainwindow.cpp \
+    config/config.cpp \
+    mainwindow/homepage/pagehome.cpp \
+    mainwindow/teacherspage/teachers.cpp \
+    mainwindow/teacherspage/teachersmodel.cpp
 
-HEADERS  += \
-    formlogin.h \
-    config.h \
-    mainwindow.h \
-    library/md5.h
+HEADERS  += login/formlogin.h\
+    library/md5.h \
+    mainwindow/mainwindow.h \
+    config/config.h \
+    mainwindow/homepage/pagehome.h \
+    mainwindow/teacherspage/teachers.h \
+    mainwindow/teacherspage/teachersmodel.h
 
 FORMS    +=
 
