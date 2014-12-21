@@ -9,16 +9,18 @@
 */
 
 #include "formlogin.h"
-#include <iostream>
+#include <QDebug>
+#include <QCryptographicHash>
+#include <QString>
 
-using namespace std;
-using namespace configApp;
+using namespace mongo;
 
 FormLogin::FormLogin(QWidget* parent) : QDialog(parent)
 {
     setFixedSize(300, 120);
     setWindowTitle("Form Login");
     setModal(true);
+    setAttribute(Qt::WA_DeleteOnClose);
 
     userLabel = new QLabel("Username:");
     passLabel = new QLabel("Password:");
@@ -66,35 +68,36 @@ void FormLogin::OnLogin()
     QString username = userLineEdit->text();
     QString password = passLineEdit->text();
 
-    if (username.isEmpty() || password.isEmpty()) {
+    // Checking if username or password is empty
+    if (username.isEmpty() || password.isEmpty())
         QMessageBox::information(this, tr("Peringatan!"), "Username atau password tidak boleh kosong");
-    } else {
-        MD5 md5;
-        // check user in database is exist or not
-        int isAuth = CheckUser(username.toStdString(), md5(password.toStdString()));
-        if (isAuth > 0) {
-            // user is logged in and destroy form login
-            this->accept();
-            // Disconnect database
-            Config::DisconnectDB();
-        } else {
-            QMessageBox::information(this, tr("Peringatan!"), "Username atau Password Salah");
-        }
-    }
-}
 
-int FormLogin::CheckUser(string username, string password)
-{
-    // initialization user
-    int n = 0;
-    // if connect success
-    if (Config::ConnectDB() > 0) {
+    #ifdef Q_OS_WIN
+        client::initialize();
+    #endif // Q_OS_WIN
+
+    try {
+        DBClientConnection c;
+        c.connect("localhost");
+
+        QCryptographicHash md5Generator(QCryptographicHash::Md5);
+        md5Generator.addData(QByteArray(password.toUtf8()));
+        QString cryptPassword = md5Generator.result().toHex();
+
+        short n = c.count("sia.users", BSON("username" << username.toStdString()
+                                             << "password" << cryptPassword.toStdString()));
+        if  (n > 0)
+            this->accept();
+        else
+          QMessageBox::information(this, tr("Peringatan!"), "Username atau Password Salah");
+    } catch (const DBException &e) {
+        qDebug() << "caught " << e.what();
         QMessageBox::warning(this, "Error", "Database tidak terkoneksi");
-        return n;
     }
-    // check user in database
-    n = c.count("sia.users", BSON("username" << username << "password" << password));
-    return n;
+
+    #ifdef Q_OS_WIN
+        client::shutdown();
+    #endif // Q_OS_WIN
 }
 
 FormLogin::~FormLogin() {}

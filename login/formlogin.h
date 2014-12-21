@@ -19,10 +19,14 @@
 #include <QPushButton>
 #include <QMessageBox>
 
-#include "library/md5.h"
-#include "config/config.h"
+// MongoDB Connection
+#ifdef Q_OS_WIN
+    #include <WinSock2.h>
+    #include <Windows.h>
+#endif //Q_OS_WIN
+#include "mongo/client/dbclient.h" // for the driver
 
-class FormLogin : public QDialog, public configApp::Config
+class FormLogin : public QDialog
 {
     Q_OBJECT
 
@@ -36,7 +40,6 @@ private slots:
 
 private:
     void reject();
-    auto CheckUser(std::string, std::string) -> int;
 
     QLabel* userLabel;
     QLabel* passLabel;
