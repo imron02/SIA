@@ -33,6 +33,7 @@ public:
     ~MainWindow();
 
 private slots:
+    void cut();
     void AboutApp();
     void CloseTab(int);
     void PageToolbar(const QString&);

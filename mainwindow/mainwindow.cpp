@@ -17,7 +17,9 @@ using namespace std;
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent)
 {
-    resize(800, 800);
+    setAttribute(Qt::WA_DeleteOnClose);
+
+    resize(800, 500);
     // centering on screen
     move(QApplication::desktop()->availableGeometry().center() - this->rect().center());
     statusBar()->showMessage(tr("Selamat datang di aplikasi sistem informasi akademik"));
@@ -65,12 +67,12 @@ void MainWindow::CreateAct()
     aboutQtAct = new QAction(QIcon::fromTheme("face-cool"), tr("About Qt"), this);
     aboutQtAct->setStatusTip("Tampilkan tentang pustaka Qt");
 
-    backAct = new QAction(QIcon::fromTheme("go-previous", QIcon(":/images/arrow-left.png")), tr("Back"), this);
+    backAct = new QAction(QIcon::fromTheme("go-previous", QIcon(":/images/go-previous.png")), tr("Back"), this);
     backAct->setStatusTip(tr("Kembali ke halaman sebelumnya"));
-    nextAct = new QAction(QIcon::fromTheme("go-next", QIcon(":/images/arrow-right.png")), tr("Next"), this);
+    nextAct = new QAction(QIcon::fromTheme("go-next", QIcon(":/images/go-next.png")), tr("Next"), this);
     nextAct->setStatusTip(tr("Pergi ke halaman selanjutnya"));
 
-    homeAct = new QAction(QIcon::fromTheme("go-home"), tr("Home"), this);
+    homeAct = new QAction(QIcon::fromTheme("go-home", QIcon(":/images/go-home.png")), tr("Home"), this);
     homeAct->setStatusTip(tr("Kembali ke menu utama"));
 
     showFullScreenAct = new QAction(tr("Full screen"), this);
@@ -85,6 +87,7 @@ void MainWindow::CreateAct()
 
     // signal and slot
     connect(quitAct, SIGNAL(triggered()), this, SLOT(close()));
+    connect(cutAct, SIGNAL(triggered()), this, SLOT(cut()));
     connect(aboutAct, SIGNAL(triggered()), this, SLOT(AboutApp()));
     connect(aboutQtAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
     connect(homeAct, SIGNAL(triggered()), signalMapper, SLOT(map()));
@@ -157,6 +160,17 @@ void MainWindow::CreateTabWidgets()
     // add tab widget to the main window
     setCentralWidget(page);
 
+}
+
+void MainWindow::cut()
+{
+    // get the last child widget which has focus and
+    // try to cast it as line edit
+    QLineEdit* lineEdit = dynamic_cast<QLineEdit*>(focusWidget());
+    if (lineEdit) {
+        // it was a line edit, perform copy
+        lineEdit->cut();
+    }
 }
 
 void MainWindow::AboutApp()
