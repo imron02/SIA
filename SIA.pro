@@ -11,7 +11,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = SIA
 TEMPLATE = app
 
-win32:RESOURCES +=
+win32:RESOURCES += \
+    application.qrc
 
 win32: QMAKE_CXXFLAGS += /wd4100
 
@@ -29,17 +30,13 @@ LIBS += -pthread\
 
 SOURCES += main.cpp\
     login/formlogin.cpp \
-    library/md5.cpp \
     mainwindow/mainwindow.cpp \
-    config/config.cpp \
     mainwindow/homepage/pagehome.cpp \
     mainwindow/teacherspage/teachers.cpp \
     mainwindow/teacherspage/teachersmodel.cpp
 
 HEADERS  += login/formlogin.h\
-    library/md5.h \
     mainwindow/mainwindow.h \
-    config/config.h \
     mainwindow/homepage/pagehome.h \
     mainwindow/teacherspage/teachers.h \
     mainwindow/teacherspage/teachersmodel.h
@@ -63,7 +60,8 @@ else:win32:CONFIG(debug, debug|release): LIBS += \
 
 win32:INCLUDEPATH += \
     $$PWD/../../mongo/mongo-client/include \
-    C:/Boost/include/boost-1_56
+    C:/Boost/include/boost-1_56 \
+    $$PWD/
 win32:DEPENDPATH += \
     $$PWD/../../mongo/mongo-client/include\
     C:/Boost/include/boost-1_56
