@@ -14,6 +14,8 @@
 
 TeachersModel::TeachersModel(QWidget* parent) : QWidget(parent)
 {
+    setAttribute(Qt::WA_DeleteOnClose);
+
     proxyModel = new QSortFilterProxyModel;
 
     sourceView = new QTreeView;
@@ -57,8 +59,6 @@ TeachersModel::TeachersModel(QWidget* parent) : QWidget(parent)
             this, SLOT(FilterRegExpChanged()));
     connect(sortCaseSensitivityCheckBox, SIGNAL(toggled(bool)),
             this, SLOT(SortChanged()));
-
-    qDebug() << "Child";
 }
 
 void TeachersModel::SetSourceModel(QAbstractItemModel* model)

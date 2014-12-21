@@ -46,8 +46,6 @@ Teachers::Teachers(QWidget* parent) : TeachersModel(parent)
     filterPatternLineEdit->setText("Andy|Grace");
     filterCaseSensitivityCheckBox->setChecked(true);
     sortCaseSensitivityCheckBox->setChecked(true);
-
-    qDebug() << "Parent";
 }
 
 void Teachers::AddMail(QAbstractItemModel* model, const QString& subject,
