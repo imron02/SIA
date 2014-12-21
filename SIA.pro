@@ -31,15 +31,15 @@ LIBS += -pthread\
 SOURCES += main.cpp\
     login/formlogin.cpp \
     mainwindow/mainwindow.cpp \
-    mainwindow/homepage/pagehome.cpp \
     mainwindow/teacherspage/teachers.cpp \
-    mainwindow/teacherspage/teachersmodel.cpp
+    mainwindow/teacherspage/teachersmodel.cpp \
+    mainwindow/homepage/home.cpp
 
 HEADERS  += login/formlogin.h\
     mainwindow/mainwindow.h \
-    mainwindow/homepage/pagehome.h \
     mainwindow/teacherspage/teachers.h \
-    mainwindow/teacherspage/teachersmodel.h
+    mainwindow/teacherspage/teachersmodel.h \
+    mainwindow/homepage/home.h
 
 FORMS    +=
 

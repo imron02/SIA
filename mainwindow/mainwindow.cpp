@@ -10,7 +10,7 @@
 
 #include <QtWidgets>
 #include "mainwindow/mainwindow.h"
-#include "mainwindow/homepage/pagehome.h"
+#include "mainwindow/homepage/home.h"
 #include "mainwindow/teacherspage/teachers.h"
 
 using namespace std;
