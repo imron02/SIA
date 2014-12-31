@@ -40,7 +40,6 @@ protected:
     void SetSourceModel(QAbstractItemModel* model);
 
     QTreeView* sourceView;
-    QTreeView* proxyView;
     QCheckBox* filterCaseSensitivityCheckBox;
     QCheckBox* sortCaseSensitivityCheckBox;
     QLabel* filterPatternLabel;

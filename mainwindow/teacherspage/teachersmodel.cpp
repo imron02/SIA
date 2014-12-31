@@ -16,17 +16,10 @@ TeachersModel::TeachersModel(QWidget* parent) : QWidget(parent)
 {
     setAttribute(Qt::WA_DeleteOnClose);
 
-    proxyModel = new QSortFilterProxyModel;
-
     sourceView = new QTreeView;
     sourceView->setRootIsDecorated(false);
     sourceView->setAlternatingRowColors(true);
-
-    proxyView = new QTreeView;
-    proxyView->setRootIsDecorated(false);
-    proxyView->setAlternatingRowColors(true);
-    proxyView->setModel(proxyModel);
-    proxyView->setSortingEnabled(true);
+    sourceView->setSortingEnabled(true);
 
     sortCaseSensitivityCheckBox = new QCheckBox(tr("Case sensitive sorting"));
     filterCaseSensitivityCheckBox = new QCheckBox(tr("Case sensitive filter"));
@@ -63,7 +56,7 @@ TeachersModel::TeachersModel(QWidget* parent) : QWidget(parent)
 
 void TeachersModel::SetSourceModel(QAbstractItemModel* model)
 {
-    proxyModel->setSourceModel(model);
+//    proxyModel->setSourceModel(model);
     sourceView->setModel(model);
 }
 
@@ -77,19 +70,19 @@ void TeachersModel::FilterRegExpChanged()
                                                        : Qt::CaseInsensitive;
 
     QRegExp regExp(filterPatternLineEdit->text(), caseSensitivity, syntax);
-    proxyModel->setFilterRegExp(regExp);
+//    proxyModel->setFilterRegExp(regExp);
 }
 
 void TeachersModel::FilterColumnChanged()
 {
-    proxyModel->setFilterKeyColumn(filterColumnComboBox->currentIndex());
+//    proxyModel->setFilterKeyColumn(filterColumnComboBox->currentIndex());
 }
 
 void TeachersModel::SortChanged()
 {
-    proxyModel->setSortCaseSensitivity(
-            sortCaseSensitivityCheckBox->isChecked() ? Qt::CaseSensitive
-                                                     : Qt::CaseInsensitive);
+//    proxyModel->setSortCaseSensitivity(
+//            sortCaseSensitivityCheckBox->isChecked() ? Qt::CaseSensitive
+//                                                     : Qt::CaseInsensitive);
 }
 
 TeachersModel::~TeachersModel() {}
