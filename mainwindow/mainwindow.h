@@ -20,6 +20,7 @@ QT_BEGIN_NAMESPACE
 class QAction;
 class QMenu;
 class QTabWidget;
+class QToolBar;
 class QSignalMapper;
 class QStringList;
 QT_END_NAMESPACE
