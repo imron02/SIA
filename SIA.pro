@@ -14,7 +14,8 @@ TEMPLATE = app
 win32:RESOURCES += \
     application.qrc
 
-win32: QMAKE_CXXFLAGS += /wd4100
+# Include winsock2.h
+win32:DEFINES += _WINSOCKAPI_
 
 unix {
 QMAKE_CXXFLAGS += -std=c++11
@@ -44,24 +45,22 @@ HEADERS  += login/formlogin.h\
 FORMS    +=
 
 win32:CONFIG(release, debug|release): LIBS += \
-    -L$$PWD/../../mongo/mongo-client/lib/ -llibmongoclient \
-    -L$$PWD/../../mongo/mongo-client/lib/ -lmongoclient \
-    -LC:/Boost/lib/ -lboost_thread-vc120-mt-1_56 \
-    -LC:/Boost/lib/ -lboost_system-vc120-mt-1_56 \
-    -LC:/Boost/lib/ -lboost_date_time-vc120-mt-1_56 \
-    -LC:/Boost/lib/ -lboost_chrono-vc120-mt-1_56
+    -LD:/Aplikasi/MongoDB/mongo-lib/lib/ -llibmongoclient \
+    -LC:/boost/lib/ -llibboost_thread-vc120-mt-1_57 \
+    -LC:/boost/lib/ -llibboost_system-vc120-mt-1_57 \
+    -LC:/boost/lib/ -llibboost_date_time-vc120-mt-1_57 \
+    -LC:/boost/lib/ -llibboost_chrono-vc120-mt-1_57
 else:win32:CONFIG(debug, debug|release): LIBS += \
-    -L$$PWD/../../mongo/mongo-client/lib/ -llibmongoclient-gd \
-    -L$$PWD/../../mongo/mongo-client/lib/ -lmongoclient-gd \
-    -LC:/Boost/lib/ -lboost_thread-vc120-mt-gd-1_56 \
-    -LC:/Boost/lib/ -lboost_system-vc120-mt-gd-1_56 \
-    -LC:/Boost/lib/ -lboost_date_time-vc120-mt-gd-1_56 \
-    -LC:/Boost/lib/ -lboost_chrono-vc120-mt-gd-1_56
+    -LD:/Aplikasi/MongoDB/mongo-lib/lib/ -llibmongoclient-gd \
+    -LC:/boost/lib/ -llibboost_thread-vc120-mt-gd-1_57 \
+    -LC:/boost/lib/ -llibboost_system-vc120-mt-gd-1_57 \
+    -LC:/boost/lib/ -llibboost_date_time-vc120-mt-gd-1_57 \
+    -LC:/boost/lib/ -llibboost_chrono-vc120-mt-gd-1_57
 
 win32:INCLUDEPATH += \
-    $$PWD/../../mongo/mongo-client/include \
-    C:/Boost/include/boost-1_56 \
+    D:/Aplikasi/MongoDB/mongo-lib/include \
+    C:/boost/include/boost-1_57 \
     $$PWD/
 win32:DEPENDPATH += \
-    $$PWD/../../mongo/mongo-client/include\
-    C:/Boost/include/boost-1_56
+    D:/Aplikasi/MongoDB/mongo-lib/include \
+    C:/boost/include/boost-1_57
