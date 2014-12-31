@@ -1,6 +1,6 @@
 /*
 |-------------------------------------------------------------------------------
-| Name:        pagehome.cpp
+| Name:        home.cpp
 | Author:      Imron Rosdiana
 | Modified by:
 | Created:     2014-12-08

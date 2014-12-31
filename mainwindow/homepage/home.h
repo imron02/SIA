@@ -1,6 +1,6 @@
 /*
 |-------------------------------------------------------------------------------
-| Name:        pagehome.h
+| Name:        home.h
 | Author:      Imron Rosdiana
 | Modified by:
 | Created:     2014-12-08
@@ -8,8 +8,8 @@
 | Licence:     GPL (General Public License) V.3
 */
 
-#ifndef PAGEHOME_H
-#define PAGEHOME_H
+#ifndef HOME_H
+#define HOME_H
 
 #include <QWidget>
 #include <QLabel>
@@ -24,4 +24,4 @@ public:
     ~PageHome();
 };
 
-#endif // PAGEHOME_H
+#endif // HOME_H
