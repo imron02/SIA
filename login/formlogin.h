@@ -22,9 +22,8 @@
 // MongoDB Connection
 #ifdef Q_OS_WIN
     #include <WinSock2.h>
-    #include <Windows.h>
-#endif //Q_OS_WIN
-#include "mongo/client/dbclient.h" // for the driver
+#endif // Q_OS_WIN
+#include "mongo/client/dbclient.h"
 
 class FormLogin : public QDialog
 {

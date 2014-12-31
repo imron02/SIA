@@ -80,9 +80,8 @@ void FormLogin::OnLogin()
         DBClientConnection c;
         c.connect("localhost");
 
-        QCryptographicHash md5Generator(QCryptographicHash::Md5);
-        md5Generator.addData(QByteArray(password.toUtf8()));
-        QString cryptPassword = md5Generator.result().toHex();
+        QString cryptPassword = QString(QCryptographicHash::hash(QByteArray(password.toUtf8()),
+                                                            QCryptographicHash::Md5).toHex());
 
         short n = c.count("sia.users", BSON("username" << username.toStdString()
                                              << "password" << cryptPassword.toStdString()));
@@ -94,10 +93,6 @@ void FormLogin::OnLogin()
         qDebug() << "caught " << e.what();
         QMessageBox::warning(this, "Error", "Database tidak terkoneksi");
     }
-
-    #ifdef Q_OS_WIN
-        client::shutdown();
-    #endif // Q_OS_WIN
 }
 
 FormLogin::~FormLogin() {}
