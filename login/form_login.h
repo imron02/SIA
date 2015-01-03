@@ -8,8 +8,8 @@
 | Licence:     GPL (General Public License) V.3
 */
 
-#ifndef FORMLOGIN_H
-#define FORMLOGIN_H
+#ifndef FORM_LOGIN_H
+#define FORM_LOGIN_H
 
 #include <QDialog>
 #include <QVBoxLayout>
@@ -22,30 +22,29 @@
 // MongoDB Connection
 #ifdef Q_OS_WIN
     #include <WinSock2.h>
-#endif // Q_OS_WIN
+#endif  // Q_OS_WIN
 #include "mongo/client/dbclient.h"
 
-class FormLogin : public QDialog
-{
-    Q_OBJECT
+class FormLogin : public QDialog {
+  Q_OBJECT
 
-public:
-    explicit FormLogin(QWidget* parent = 0);
-    ~FormLogin();
+ public:
+  explicit FormLogin(QWidget* parent = 0);
+  ~FormLogin();
 
-private slots:
-    void OnQuit();
-    void OnLogin();
+ private slots:
+  void OnQuit();
+  void OnLogin();
 
-private:
-    void reject();
+ private:
+  void reject();
 
-    QLabel* userLabel;
-    QLabel* passLabel;
-    QLineEdit* userLineEdit;
-    QLineEdit* passLineEdit;
-    QPushButton* loginButton;
-    QPushButton* quitButton;
+  QLabel* user_label_;
+  QLabel* pass_label_;
+  QLineEdit* user_lineedit_;
+  QLineEdit* pass_lineedit_;
+  QPushButton* login_button_;
+  QPushButton* quit_button_;
 };
 
-#endif // FORMLOGIN_H
+#endif  // FORM_LOGIN_H
