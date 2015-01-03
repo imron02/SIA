@@ -78,7 +78,7 @@ QAbstractItemModel* Teachers::CreateTeacherModel(QObject* parent)
                       QDate(QDateTime::fromTime_t(p.getField("datebirth").date()).date()),
                       p.getStringField("sex"), p.getStringField("certificate"),
                       p.getStringField("position"), p.getStringField("teach"),
-                      p.getStringField("fielofstudi"));
+                      p.getStringField("fieldofstudy"));
         }
     } catch (const DBException &e) {
         qDebug() << "Caught " << e.what();
