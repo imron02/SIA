@@ -9,12 +9,16 @@
 */
 
 #include "login/form_login.h"
+#include "form_login_model.h"
 #include <QDebug>
-#include <QCryptographicHash>
 #include <QString>
+#include <iostream>
+#include <exception>
+#include <QMessageBox>
 
-using mongo::DBClientConnection;
-using mongo::DBException;
+using std::cout;
+using std::endl;
+using std::exception;
 
 FormLogin::FormLogin(QWidget* parent) : QDialog(parent) {
   setFixedSize(300, 120);
@@ -61,39 +65,26 @@ void FormLogin::OnQuit() {
 }
 
 void FormLogin::OnLogin() {
-  QString username = user_lineedit_->text();
-  QString password = pass_lineedit_->text();
+  FormLoginModel formLoginModel(user_lineedit_->text(),
+                                pass_lineedit_->text());
 
   // Checking if username or password is empty
-  if (username.isEmpty() || password.isEmpty()) {
+  if (formLoginModel.getusername().isEmpty()
+      || formLoginModel.getpassword().isEmpty()) {
     QMessageBox::information(this, tr("Peringatan!"),
-                 "Username atau password tidak boleh kosong");
+                "Username atau password tidak boleh kosong");
     return;
   }
 
-#ifdef Q_OS_WIN
-  client::initialize();
-#endif  // Q_OS_WIN
-
   try {
-    DBClientConnection c;
-    c.connect("localhost");
-    QString cryptPassword = QString(QCryptographicHash::hash(
-                                    QByteArray(password.toUtf8()),
-                                    QCryptographicHash::Md5).toHex());
-    int8_t n = c.count("sia.users", BSON("username"
-                                        << username.toStdString()
-                                        << "password"
-                                        << cryptPassword.toStdString()));
-    if  (n > 0) {
+    if  (formLoginModel.getLogin() > 0) {
       this->accept();
     } else {
       QMessageBox::information(this, tr("Peringatan!"),
                    "Username atau Password Salah");
     }
-  } catch (const DBException &e) {
-      qDebug() << "caught " << e.what();
-      QMessageBox::warning(this, "Error", "Database tidak terkoneksi");
+  } catch (const exception& e) {
+      QMessageBox::critical(this, "Error", e.what());
   }
 }
 
