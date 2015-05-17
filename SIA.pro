@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = SIA
 TEMPLATE = app
 
-win32:RESOURCES += \
+RESOURCES += \
     application.qrc
 
 # Include winsock2.h
@@ -30,17 +30,20 @@ LIBS += -pthread\
 }
 
 SOURCES += main.cpp\
-    login/formlogin.cpp \
-    mainwindow/mainwindow.cpp \
     mainwindow/teacherspage/teachers.cpp \
     mainwindow/teacherspage/teachersmodel.cpp \
-    mainwindow/homepage/home.cpp
+    mainwindow/homepage/home.cpp \
+    login/form_login.cpp \
+    mainwindow/main_window.cpp \
+    login/form_login_model.cpp
 
-HEADERS  += login/formlogin.h\
-    mainwindow/mainwindow.h \
+HEADERS  +=\
     mainwindow/teacherspage/teachers.h \
     mainwindow/teacherspage/teachersmodel.h \
-    mainwindow/homepage/home.h
+    mainwindow/homepage/home.h \
+    login/form_login.h \
+    mainwindow/main_window.h \
+    login/form_login_model.h
 
 FORMS    +=
 
