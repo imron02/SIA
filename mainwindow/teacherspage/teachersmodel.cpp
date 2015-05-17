@@ -11,12 +11,15 @@
 #include <QtWidgets>
 #include <QDebug>
 #include <iostream>
-#include <ctime>
-#include <locale>
 #include "mainwindow/teacherspage/teachersmodel.h"
 
 using namespace std;
 using namespace mongo;
+
+QDate TeachersModel::DateOfBirth(const BSONElement& datebirth)
+{
+    return QDate(QDateTime::fromTime_t(datebirth.date()/1000).date());
+}
 
 void TeachersModel::AddTeacher(QAbstractItemModel* model,
                        const QString& induk_no,
@@ -64,10 +67,10 @@ QAbstractItemModel* TeachersModel::CreateTeacherModel(QObject* parent)
         unique_ptr<DBClientCursor> cursor = c.query("sia.teachers", BSONObj());
         while (cursor->more()) {
            BSONObj p = cursor->next();
+           DateOfBirth(p.getField("datebirth"));
            AddTeacher(model, p.getStringField("induk_no"), p.getStringField("name"),
                       p.getStringField("phone"),
-//                      QDate(p.getStringField("datebirth")),
-                       QDate(QDate::fromString(p.getStringField("datebirth"), "yyyyMMdd")),
+                      DateOfBirth(p.getField("datebirth")),
                       p.getStringField("sex"), p.getStringField("certificate"),
                       p.getStringField("position"), p.getStringField("teach"),
                       p.getStringField("fieldofstudy"));

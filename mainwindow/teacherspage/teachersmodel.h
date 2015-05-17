@@ -39,6 +39,7 @@ private:
                     const QString& position,
                     const QString& teach,
                     const QString& fieldofstudy);
+    QDate DateOfBirth(const mongo::BSONElement& datebirth);
     mongo::DBClientConnection c;
 };
 
