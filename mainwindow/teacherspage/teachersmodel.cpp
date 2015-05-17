@@ -10,79 +10,73 @@
 
 #include <QtWidgets>
 #include <QDebug>
+#include <iostream>
+#include <ctime>
+#include <locale>
 #include "mainwindow/teacherspage/teachersmodel.h"
 
-TeachersModel::TeachersModel(QWidget* parent) : QWidget(parent)
+using namespace std;
+using namespace mongo;
+
+void TeachersModel::AddTeacher(QAbstractItemModel* model,
+                       const QString& induk_no,
+                       const QString& name,
+                       const QString& phone,
+                       const QDate& datebirth,
+                       const QString& sex,
+                       const QString& certificate,
+                       const QString& position,
+                       const QString& teach,
+                       const QString& fieldofstudy)
 {
-    setAttribute(Qt::WA_DeleteOnClose);
-
-    sourceView = new QTreeView;
-    sourceView->setRootIsDecorated(false);
-    sourceView->setAlternatingRowColors(true);
-    sourceView->setSortingEnabled(true);
-
-    sortCaseSensitivityCheckBox = new QCheckBox(tr("Case sensitive sorting"));
-    filterCaseSensitivityCheckBox = new QCheckBox(tr("Case sensitive filter"));
-
-    filterPatternLineEdit = new QLineEdit;
-    filterPatternLabel = new QLabel(tr("&Filter pattern:"));
-    filterPatternLabel->setBuddy(filterPatternLineEdit);
-
-    filterSyntaxComboBox = new QComboBox;
-    filterSyntaxComboBox->addItem(tr("Regular expression"), QRegExp::RegExp);
-    filterSyntaxComboBox->addItem(tr("Wildcard"), QRegExp::Wildcard);
-    filterSyntaxComboBox->addItem(tr("Fixed string"), QRegExp::FixedString);
-    filterSyntaxLabel = new QLabel(tr("Filter &syntax:"));
-    filterSyntaxLabel->setBuddy(filterSyntaxComboBox);
-
-    filterColumnComboBox = new QComboBox;
-    filterColumnComboBox->addItem(tr("Subject"));
-    filterColumnComboBox->addItem(tr("Sender"));
-    filterColumnComboBox->addItem(tr("Date"));
-    filterColumnLabel = new QLabel(tr("Filter &column:"));
-    filterColumnLabel->setBuddy(filterColumnComboBox);
-
-    connect(filterPatternLineEdit, SIGNAL(textChanged(QString)),
-            this, SLOT(FilterRegExpChanged()));
-    connect(filterSyntaxComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(FilterRegExpChanged()));
-    connect(filterColumnComboBox, SIGNAL(currentIndexChanged(int)),
-            this, SLOT(FilterColumnChanged()));
-    connect(filterCaseSensitivityCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(FilterRegExpChanged()));
-    connect(sortCaseSensitivityCheckBox, SIGNAL(toggled(bool)),
-            this, SLOT(SortChanged()));
+    model->insertRow(0);
+    model->setData(model->index(0, 0), induk_no);
+    model->setData(model->index(0, 1), name);
+    model->setData(model->index(0, 2), phone);
+    model->setData(model->index(0, 3), datebirth);
+    model->setData(model->index(0, 4), sex);
+    model->setData(model->index(0, 5), certificate);
+    model->setData(model->index(0, 6), position);
+    model->setData(model->index(0, 7), teach);
+    model->setData(model->index(0, 8), fieldofstudy);
 }
 
-void TeachersModel::SetSourceModel(QAbstractItemModel* model)
+QAbstractItemModel* TeachersModel::CreateTeacherModel(QObject* parent)
 {
-//    proxyModel->setSourceModel(model);
-    sourceView->setModel(model);
-}
+    QStandardItemModel* model = new QStandardItemModel(0, 9, parent);
 
-void TeachersModel::FilterRegExpChanged()
-{
-    QRegExp::PatternSyntax syntax =
-            QRegExp::PatternSyntax(filterSyntaxComboBox->itemData(
-                    filterSyntaxComboBox->currentIndex()).toInt());
-    Qt::CaseSensitivity caseSensitivity =
-            filterCaseSensitivityCheckBox->isChecked() ? Qt::CaseSensitive
-                                                       : Qt::CaseInsensitive;
+    model->setHeaderData(0, Qt::Horizontal, QObject::tr("No Induk"));
+    model->setHeaderData(1, Qt::Horizontal, QObject::tr("Nama"));
+    model->setHeaderData(2, Qt::Horizontal, QObject::tr("Telepon"));
+    model->setHeaderData(3, Qt::Horizontal, QObject::tr("Tanggal Lahir"));
+    model->setHeaderData(4, Qt::Horizontal, QObject::tr("Jenis Kelamin"));
+    model->setHeaderData(5, Qt::Horizontal, QObject::tr("Ijazah"));
+    model->setHeaderData(6, Qt::Horizontal, QObject::tr("Jabatan"));
+    model->setHeaderData(7, Qt::Horizontal, QObject::tr("Mengajar"));
+    model->setHeaderData(8, Qt::Horizontal, QObject::tr("Bidang Studi"));
 
-    QRegExp regExp(filterPatternLineEdit->text(), caseSensitivity, syntax);
-//    proxyModel->setFilterRegExp(regExp);
-}
+    #ifdef Q_OS_WIN
+        client::initialize();
+    #endif // Q_OS_WIN
 
-void TeachersModel::FilterColumnChanged()
-{
-//    proxyModel->setFilterKeyColumn(filterColumnComboBox->currentIndex());
-}
+//    try {
+        c.connect("localhost");
+        unique_ptr<DBClientCursor> cursor = c.query("sia.teachers", BSONObj());
+        while (cursor->more()) {
+           BSONObj p = cursor->next();
+           AddTeacher(model, p.getStringField("induk_no"), p.getStringField("name"),
+                      p.getStringField("phone"),
+//                      QDate(p.getStringField("datebirth")),
+                       QDate(QDate::fromString(p.getStringField("datebirth"), "yyyyMMdd")),
+                      p.getStringField("sex"), p.getStringField("certificate"),
+                      p.getStringField("position"), p.getStringField("teach"),
+                      p.getStringField("fieldofstudy"));
+        }
+//    } catch (const DBException &e) {
 
-void TeachersModel::SortChanged()
-{
-//    proxyModel->setSortCaseSensitivity(
-//            sortCaseSensitivityCheckBox->isChecked() ? Qt::CaseSensitive
-//                                                     : Qt::CaseInsensitive);
+//    }
+
+    return model;
 }
 
 TeachersModel::~TeachersModel() {}

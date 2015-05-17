@@ -11,46 +11,35 @@
 #ifndef TEACHERSMODEL_H
 #define TEACHERSMODEL_H
 
-#include <QWidget>
+#include <QAbstractItemModel>
+#include <QString>
+#include <QTime>
 
-QT_BEGIN_NAMESPACE
-class QSortFilterProxyModel;
-class QTreeView;
-class QCheckBox;
-class QLabel;
-class QLineEdit;
-class QComboBox;
-class QAbstractItemModel;
-QT_END_NAMESPACE
+// MongoDB Connection
+#ifdef Q_OS_WIN
+    #include <WinSock2.h>
+#endif // Q_OS_WIN
+#include "mongo/client/dbclient.h"
 
-class TeachersModel : public QWidget
+class TeachersModel
 {
-    Q_OBJECT
-
 public:
-    TeachersModel(QWidget* parent = 0);
     ~TeachersModel();
 
-private slots:
-    void FilterRegExpChanged();
-    void FilterColumnChanged();
-    void SortChanged();
-
-protected:
-    void SetSourceModel(QAbstractItemModel* model);
-
-    QTreeView* sourceView;
-    QCheckBox* filterCaseSensitivityCheckBox;
-    QCheckBox* sortCaseSensitivityCheckBox;
-    QLabel* filterPatternLabel;
-    QLabel* filterSyntaxLabel;
-    QLabel* filterColumnLabel;
-    QLineEdit* filterPatternLineEdit;
-    QComboBox* filterSyntaxComboBox;
-    QComboBox* filterColumnComboBox;
+    QAbstractItemModel* CreateTeacherModel(QObject* parent);
 
 private:
-    QSortFilterProxyModel* proxyModel;
+    void AddTeacher(QAbstractItemModel* model,
+                    const QString& induk_no,
+                    const QString& name,
+                    const QString& phone,
+                    const QDate& date,
+                    const QString& sex,
+                    const QString& certificate,
+                    const QString& position,
+                    const QString& teach,
+                    const QString& fieldofstudy);
+    mongo::DBClientConnection c;
 };
 
 #endif // TEACHERSMODEL_H
