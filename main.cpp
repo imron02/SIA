@@ -11,20 +11,17 @@
 #include <QApplication>
 #include <QtPlugin>
 
-#include "mainwindow/mainwindow.h"
-#include "login/formlogin.h"
+#include "mainwindow/main_window.h"
+#include "login/form_login.h"
 
-int main(int argc, char* argv[])
-{
-    #ifdef _WIN32
-        Q_INIT_RESOURCE(application);
-    #endif // _WIN32
+int main(int argc, char* argv[]) {
+  Q_INIT_RESOURCE(application);
 
-    QApplication app(argc, argv);
-    MainWindow* mainWindow = new MainWindow();
-    FormLogin* formLogin = new FormLogin(mainWindow);
-    formLogin->show();
-    mainWindow->show();
+  QApplication app(argc, argv);
+  MainWindow* mainWindow = new MainWindow();
+  FormLogin* formLogin = new FormLogin(mainWindow);
+  mainWindow->show();
+  formLogin->show();
 
-    return app.exec();
+  return app.exec();
 }
