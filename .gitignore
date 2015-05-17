@@ -26,6 +26,7 @@ Release/
 *-backup
 *.mk
 *.project
+build/
 
 # Code::Block
 *.cbp
