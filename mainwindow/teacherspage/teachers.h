@@ -18,9 +18,12 @@ class QTreeView;
 class QCheckBox;
 class QLabel;
 class QLineEdit;
+class QPushButton;
 class QComboBox;
 class QAbstractItemModel;
+class QAbstractItemView;
 class QHBoxLayout;
+class QVBoxLayout;
 QT_END_NAMESPACE
 
 class Teachers : public QWidget
@@ -34,6 +37,11 @@ private:
     void SetSourceModel(QAbstractItemModel* model);
 
     QTreeView* sourceView;
+    QLabel* filterLabel_;
+    QLineEdit* filterEdit_;
+    QPushButton* addButton_;
+    QPushButton* editButton_;
+    QPushButton* deleteButton_;
 };
 
 #endif // TEACHERS_H

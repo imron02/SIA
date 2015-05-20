@@ -25,9 +25,30 @@ Teachers::Teachers(QWidget* parent) : QWidget(parent)
     sourceView->setSortingEnabled(true);
     sourceView->sortByColumn(0, Qt::AscendingOrder);
 
+    filterLabel_ = new QLabel("Cari");
+    filterEdit_ = new QLineEdit;
+    filterEdit_->setFixedWidth(600);
+    addButton_ = new QPushButton("Tambah");
+    addButton_->setFixedWidth(100);
+    editButton_ = new QPushButton("Edit");
+    editButton_->setFixedWidth(100);
+    deleteButton_ = new QPushButton("Hapus");
+    deleteButton_->setFixedWidth(100);
+
+    QVBoxLayout* mainLayout = new QVBoxLayout;
+    QHBoxLayout* filterLayout = new QHBoxLayout;
     QHBoxLayout* sourceLayout = new QHBoxLayout;
+
+    filterLayout->addWidget(filterLabel_, 1);
+    filterLayout->addWidget(filterEdit_, 2);
+    filterLayout->addWidget(addButton_, 3);
+    filterLayout->addWidget(editButton_, 4);
+    filterLayout->addWidget(deleteButton_, 5);
     sourceLayout->addWidget(sourceView);
-    setLayout(sourceLayout);
+
+    mainLayout->addLayout(filterLayout);
+    mainLayout->addLayout(sourceLayout);
+    setLayout(mainLayout);
 
     TeachersModel teachersModel;
     try {
@@ -41,6 +62,8 @@ Teachers::Teachers(QWidget* parent) : QWidget(parent)
 void Teachers::SetSourceModel(QAbstractItemModel* model)
 {
     sourceView->setModel(model);
+    sourceView->setColumnHidden(0, true);
+    sourceView->setEditTriggers(QAbstractItemView::NoEditTriggers);
 }
 
 Teachers::~Teachers() {}

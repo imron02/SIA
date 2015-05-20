@@ -30,6 +30,7 @@ public:
 
 private:
     void AddTeacher(QAbstractItemModel* model,
+                    const QString& id,
                     const QString& induk_no,
                     const QString& name,
                     const QString& phone,
