@@ -21,27 +21,35 @@ class QLineEdit;
 class QPushButton;
 class QComboBox;
 class QAbstractItemModel;
-class QAbstractItemView;
 class QHBoxLayout;
-class QVBoxLayout;
+class QVBoxLayout;\
+class QSortFilterProxyModel;
 QT_END_NAMESPACE
 
 class Teachers : public QWidget
 {
+    Q_OBJECT
 
 public:
     Teachers(QWidget* parent = 0);
     ~Teachers();
 
-private:
     void SetSourceModel(QAbstractItemModel* model);
 
-    QTreeView* sourceView;
-    QLabel* filterLabel_;
-    QLineEdit* filterEdit_;
-    QPushButton* addButton_;
-    QPushButton* editButton_;
-    QPushButton* deleteButton_;
+private slots:
+    void filterRegExpChanged();
+    void filterColumnChanged();
+    void addTeacher();
+
+private:
+    QSortFilterProxyModel *proxyModel_;
+    QTreeView *proxyView_;
+    QLabel *filterPatternLabel_;
+    QLineEdit *filterPatternLineEdit_;
+    QComboBox *filterColumnComboBox_;
+    QPushButton *addButton_;
+    QPushButton *editButton_;
+    QPushButton *deleteButton_;
 };
 
 #endif // TEACHERS_H

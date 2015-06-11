@@ -29,18 +29,18 @@ public:
     QAbstractItemModel* CreateTeacherModel(QObject* parent);
 
 private:
-    void AddTeacher(QAbstractItemModel* model,
-                    const QString& id,
-                    const QString& induk_no,
-                    const QString& name,
-                    const QString& phone,
-                    const QDate& date,
-                    const QString& sex,
-                    const QString& certificate,
-                    const QString& position,
-                    const QString& teach,
-                    const QString& fieldofstudy);
     QDate DateOfBirth(const mongo::BSONElement& datebirth);
+    void AddTeacher(QAbstractItemModel* model,
+                    const QString &induk_no,
+                    const QString &name,
+                    const QString &phone,
+                    const QDate &datebirth,
+                    const QString &sex,
+                    const QString &certificate,
+                    const QString &position,
+                    const QString &teach,
+                    const QString &fieldofstudy,
+                    const QString &id);
     mongo::DBClientConnection c;
 };
 

@@ -12,22 +12,29 @@
 #include <exception>
 #include "mainwindow/teacherspage/teachers.h"
 #include "mainwindow/teacherspage/teachersmodel.h"
+#include "mainwindow/teacherspage/crud_teacher.h"
 
 using namespace std;
 
 Teachers::Teachers(QWidget* parent) : QWidget(parent)
 {
-    setAttribute(Qt::WA_DeleteOnClose);
+    proxyModel_ = new QSortFilterProxyModel;
 
-    sourceView = new QTreeView;
-    sourceView->setRootIsDecorated(false);
-    sourceView->setAlternatingRowColors(true);
-    sourceView->setSortingEnabled(true);
-    sourceView->sortByColumn(0, Qt::AscendingOrder);
+    proxyView_ = new QTreeView;
+    proxyView_->setRootIsDecorated(false);
+    proxyView_->setAlternatingRowColors(true);
+    proxyView_->setModel(proxyModel_);
+    proxyView_->setSortingEnabled(true);
+    proxyView_->sortByColumn(1, Qt::AscendingOrder);
 
-    filterLabel_ = new QLabel("Cari");
-    filterEdit_ = new QLineEdit;
-    filterEdit_->setFixedWidth(600);
+    filterPatternLineEdit_ = new QLineEdit;
+    filterPatternLabel_ = new QLabel("Cari data:");
+
+    filterColumnComboBox_ = new QComboBox;
+    filterColumnComboBox_->addItem("No Induk");
+    filterColumnComboBox_->addItem("Nama");
+    filterColumnComboBox_->setFixedWidth(200);
+
     addButton_ = new QPushButton("Tambah");
     addButton_->setFixedWidth(100);
     editButton_ = new QPushButton("Edit");
@@ -35,35 +42,59 @@ Teachers::Teachers(QWidget* parent) : QWidget(parent)
     deleteButton_ = new QPushButton("Hapus");
     deleteButton_->setFixedWidth(100);
 
-    QVBoxLayout* mainLayout = new QVBoxLayout;
-    QHBoxLayout* filterLayout = new QHBoxLayout;
-    QHBoxLayout* sourceLayout = new QHBoxLayout;
+    connect(filterPatternLineEdit_, SIGNAL(textChanged(QString)),
+            this, SLOT(filterRegExpChanged()));
+    connect(filterColumnComboBox_, SIGNAL(currentIndexChanged(int)),
+            this, SLOT(filterColumnChanged()));
+    connect(addButton_, SIGNAL(clicked()), this, SLOT(addTeacher()));
 
-    filterLayout->addWidget(filterLabel_, 1);
-    filterLayout->addWidget(filterEdit_, 2);
-    filterLayout->addWidget(addButton_, 3);
-    filterLayout->addWidget(editButton_, 4);
-    filterLayout->addWidget(deleteButton_, 5);
-    sourceLayout->addWidget(sourceView);
+    QVBoxLayout *mainLayout = new QVBoxLayout;
+    QHBoxLayout *filterLayout = new QHBoxLayout;
+    QHBoxLayout *sourceLayout = new QHBoxLayout;
+
+    filterLayout->addWidget(filterPatternLabel_, 1);
+    filterLayout->addWidget(filterPatternLineEdit_, 2);
+    filterLayout->addWidget(filterColumnComboBox_, 3);
+    filterLayout->addWidget(addButton_, 4);
+    filterLayout->addWidget(editButton_, 5);
+    filterLayout->addWidget(deleteButton_, 6);
+    sourceLayout->addWidget(proxyView_);
 
     mainLayout->addLayout(filterLayout);
     mainLayout->addLayout(sourceLayout);
     setLayout(mainLayout);
 
-    TeachersModel teachersModel;
+    TeachersModel *teachersModel = new TeachersModel;
     try {
-        SetSourceModel(teachersModel.CreateTeacherModel(this));
+        SetSourceModel(teachersModel->CreateTeacherModel(this));
     } catch (exception& e) {
         qDebug() << "Caught " << e.what();
         QMessageBox::critical(this, "Error", e.what());
     }
 }
 
+void Teachers::filterRegExpChanged()
+{
+    QRegExp regExp(filterPatternLineEdit_->text(), Qt::CaseInsensitive, QRegExp::RegExp);
+    proxyModel_->setFilterRegExp(regExp);
+}
+
+void Teachers::filterColumnChanged()
+{
+    proxyModel_->setFilterKeyColumn(filterColumnComboBox_->currentIndex());
+}
+
+void Teachers::addTeacher()
+{
+    CrudTeacher *crudTeacher = new CrudTeacher(this);
+    crudTeacher->show();
+}
+
 void Teachers::SetSourceModel(QAbstractItemModel* model)
 {
-    sourceView->setModel(model);
-    sourceView->setColumnHidden(0, true);
-    sourceView->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    proxyModel_->setSourceModel(model);
+    proxyView_->setColumnHidden(9, true);
 }
+
 
 Teachers::~Teachers() {}
