@@ -35,7 +35,8 @@ SOURCES += main.cpp\
     mainwindow/homepage/home.cpp \
     login/form_login.cpp \
     mainwindow/main_window.cpp \
-    login/form_login_model.cpp
+    login/form_login_model.cpp \
+    mainwindow/teacherspage/crud_teacher.cpp
 
 HEADERS  +=\
     mainwindow/teacherspage/teachers.h \
@@ -43,7 +44,8 @@ HEADERS  +=\
     mainwindow/homepage/home.h \
     login/form_login.h \
     mainwindow/main_window.h \
-    login/form_login_model.h
+    login/form_login_model.h \
+    mainwindow/teacherspage/crud_teacher.h
 
 FORMS    +=
 
