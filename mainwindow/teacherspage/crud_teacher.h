@@ -11,10 +11,15 @@
 #ifndef CRUD_TEACHER
 #define CRUD_TEACHER
 
-#include <QDialog>
-#include <QLabel>
-#include <QLineEdit>
-#include <QPushButton>
+#include <QtWidgets>
+
+QT_BEGIN_NAMESPACE
+class QDialog;
+class QLabel;
+class QLineEdit;
+class QComboBox;
+class QPushButton;
+QT_END_NAMESPACE
 
 class CrudTeacher : public QDialog
 {
@@ -25,9 +30,13 @@ public:
     ~CrudTeacher();
 
 private slots:
+    void OnAdd();
     void OnQuit();
 
 private:
+    void CreateWidget();
+    void SetLayout();
+
     QLabel *noIndukLabel_;
     QLabel *nameLabel_;
     QLabel *tlpLabel_;
@@ -41,7 +50,7 @@ private:
     QLineEdit *nameLineEdit_;
     QLineEdit *tlpLineEdit_;
     QLineEdit *tglLineEdit_;
-    QLineEdit *sexLineEdit_;
+    QComboBox *sexComboBox_;
     QLineEdit *certificateLineEdit_;
     QLineEdit *positionLineEdit_;
     QLineEdit *teachLineEdit_;

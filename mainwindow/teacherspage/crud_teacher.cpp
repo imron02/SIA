@@ -11,6 +11,7 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QHBoxLayout>
+#include <QDebug>
 #include "mainwindow/teacherspage/crud_teacher.h"
 
 CrudTeacher::CrudTeacher(QWidget *parent) : QDialog(parent)
@@ -20,6 +21,12 @@ CrudTeacher::CrudTeacher(QWidget *parent) : QDialog(parent)
     setWindowTitle("Tambah data guru");
     setAttribute(Qt::WA_DeleteOnClose);
 
+    this->CreateWidget();
+    this->SetLayout();
+}
+
+void CrudTeacher::CreateWidget()
+{
     noIndukLabel_ = new QLabel("No Induk:");
     nameLabel_ = new QLabel("Nama:");
     tlpLabel_ = new QLabel("Telepon:");
@@ -29,19 +36,28 @@ CrudTeacher::CrudTeacher(QWidget *parent) : QDialog(parent)
     positionLabel_ = new QLabel("Jabatan");
     teachLabel_ = new QLabel("Mengajar");
     fieldofstudyLabel_ = new QLabel("Bidang Studi:");
-    noIndukLineEdit_ = new QLineEdit();
-    nameLineEdit_ = new QLineEdit();
-    tlpLineEdit_ = new QLineEdit();
-    tglLineEdit_ = new QLineEdit();
-    sexLineEdit_ = new QLineEdit();
-    certificateLineEdit_ = new QLineEdit();
-    positionLineEdit_ = new QLineEdit();
-    teachLineEdit_ = new QLineEdit();
-    fieldofstudyLineEdit_ = new QLineEdit();
+    noIndukLineEdit_ = new QLineEdit;
+    noIndukLineEdit_->setInputMask("9999999999");
+    nameLineEdit_ = new QLineEdit;
+    tlpLineEdit_ = new QLineEdit;
+    tglLineEdit_ = new QLineEdit;
+    sexComboBox_ = new QComboBox;
+    sexComboBox_->addItem("Laki-laki", QVariant("L"));
+    sexComboBox_->addItem("Perempuan", QVariant("P"));
+    certificateLineEdit_ = new QLineEdit;
+    positionLineEdit_ = new QLineEdit;
+    teachLineEdit_ = new QLineEdit;
+    fieldofstudyLineEdit_ = new QLineEdit;
 
     addButton_ = new QPushButton("Tambah");
     cancelButton_ = new QPushButton("Batal");
 
+    connect(cancelButton_, SIGNAL(clicked()), this, SLOT(OnQuit()));
+    connect(addButton_, SIGNAL(clicked()), this, SLOT(OnAdd()));
+}
+
+void CrudTeacher::SetLayout()
+{
     QVBoxLayout *mainLayout = new QVBoxLayout;
     QGridLayout *sourceLayout = new QGridLayout;
 
@@ -54,7 +70,7 @@ CrudTeacher::CrudTeacher(QWidget *parent) : QDialog(parent)
     sourceLayout->addWidget(tglLabel_, 3, 1);
     sourceLayout->addWidget(tglLineEdit_, 3, 2);
     sourceLayout->addWidget(sexLabel_, 4, 1);
-    sourceLayout->addWidget(sexLineEdit_, 4, 2);
+    sourceLayout->addWidget(sexComboBox_, 4, 2);
     sourceLayout->addWidget(certificateLabel_, 5, 1);
     sourceLayout->addWidget(certificateLineEdit_, 5, 2);
     sourceLayout->addWidget(positionLabel_, 6, 1);
@@ -68,11 +84,14 @@ CrudTeacher::CrudTeacher(QWidget *parent) : QDialog(parent)
     actionLayout->addWidget(addButton_, 1, Qt::AlignRight);
     actionLayout->addWidget(cancelButton_, 0, Qt::AlignRight);
 
-    connect(cancelButton_, SIGNAL(clicked()), this, SLOT(OnQuit()));
-
     mainLayout->addLayout(sourceLayout);
     mainLayout->addLayout(actionLayout);
     setLayout(mainLayout);
+}
+
+void CrudTeacher::OnAdd()
+{
+    qDebug() << sexComboBox_->itemData(sexComboBox_->currentIndex()).toString();
 }
 
 void CrudTeacher::OnQuit()
