@@ -19,9 +19,9 @@ int main(int argc, char* argv[]) {
 
   QApplication app(argc, argv);
   MainWindow* mainWindow = new MainWindow();
-  FormLogin* formLogin = new FormLogin(mainWindow);
+//  FormLogin* formLogin = new FormLogin(mainWindow);
   mainWindow->show();
-  formLogin->show();
+//  formLogin->show();
 
   return app.exec();
 }

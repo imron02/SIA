@@ -11,6 +11,7 @@
 #include <QVBoxLayout>
 #include <QGridLayout>
 #include <QHBoxLayout>
+#include <QRegExp>
 #include <QDebug>
 #include "mainwindow/teacherspage/crud_teacher.h"
 
@@ -37,7 +38,6 @@ void CrudTeacher::CreateWidget()
     teachLabel_ = new QLabel("Mengajar");
     fieldofstudyLabel_ = new QLabel("Bidang Studi:");
     noIndukLineEdit_ = new QLineEdit;
-    noIndukLineEdit_->setInputMask("9999999999");
     nameLineEdit_ = new QLineEdit;
     tlpLineEdit_ = new QLineEdit;
     tglLineEdit_ = new QLineEdit;
@@ -52,6 +52,18 @@ void CrudTeacher::CreateWidget()
     addButton_ = new QPushButton("Tambah");
     cancelButton_ = new QPushButton("Batal");
 
+    //Regex only number
+    QRegExp rxNum("\\d+");
+    QValidator *valNum = new QRegExpValidator(rxNum, this);
+    noIndukLineEdit_->setValidator(valNum);
+    tlpLineEdit_->setValidator(valNum);
+
+    // Regex only character
+    QRegExp rxChar("^[A-Za-z\\s]+$");
+    QValidator *valChar = new QRegExpValidator(rxChar, this);
+    nameLineEdit_->setValidator(valChar);
+
+    // Slots
     connect(cancelButton_, SIGNAL(clicked()), this, SLOT(OnQuit()));
     connect(addButton_, SIGNAL(clicked()), this, SLOT(OnAdd()));
 }
