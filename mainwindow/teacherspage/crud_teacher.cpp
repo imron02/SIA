@@ -13,7 +13,10 @@
 #include <QHBoxLayout>
 #include <QRegExp>
 #include <QDebug>
+#include <QStringList>
+#include <iostream>
 #include "mainwindow/teacherspage/crud_teacher.h"
+#include "mainwindow/teacherspage/teachersmodel.h"
 
 CrudTeacher::CrudTeacher(QWidget *parent) : QDialog(parent)
 {
@@ -41,6 +44,7 @@ void CrudTeacher::CreateWidget()
     nameLineEdit_ = new QLineEdit;
     tlpLineEdit_ = new QLineEdit;
     tglLineEdit_ = new QLineEdit;
+    tglLineEdit_->setInputMask("99-99-9999");
     sexComboBox_ = new QComboBox;
     sexComboBox_->addItem("Laki-laki", QVariant("L"));
     sexComboBox_->addItem("Perempuan", QVariant("P"));
@@ -103,7 +107,28 @@ void CrudTeacher::SetLayout()
 
 void CrudTeacher::OnAdd()
 {
-    qDebug() << sexComboBox_->itemData(sexComboBox_->currentIndex()).toString();
+    if(noIndukLineEdit_->text().isEmpty()) {
+        QMessageBox::information(this, tr("Peringatan!"), "Nomor induk tidak boleh kosong");
+        return;
+    }
+    // Save data to database
+    TeachersModel *teachersModel = new TeachersModel;
+    try {
+        teachersModel->SaveTeacher(noIndukLineEdit_->text(),
+                                   nameLineEdit_->text(),
+                                   tlpLineEdit_->text(),
+                                   QDate::fromString(tglLineEdit_->text(), "dd-MM-yyyy"),
+                                   sexComboBox_->itemData(sexComboBox_->currentIndex()).toString(),
+                                   certificateLineEdit_->text(),
+                                   positionLineEdit_->text(),
+                                   teachLineEdit_->text(),
+                                   fieldofstudyLineEdit_->text());
+        QMessageBox::information(this, tr("Info!"), "Data berhasil di tambahkan");
+    } catch (std::exception &e) {
+        QMessageBox::information(this, tr("Info!"), e.what());
+    }
+
+    this->close();
 }
 
 void CrudTeacher::OnQuit()

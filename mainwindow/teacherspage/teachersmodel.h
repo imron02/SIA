@@ -14,6 +14,8 @@
 #include <QAbstractItemModel>
 #include <QString>
 #include <QTime>
+#include <QDate>
+#include <QDateTime>
 
 // MongoDB Connection
 #ifdef Q_OS_WIN
@@ -27,6 +29,15 @@ public:
     ~TeachersModel();
 
     QAbstractItemModel* CreateTeacherModel(QObject* parent);
+    void SaveTeacher(const QString &induk_no,
+                     const QString &name,
+                     const QString &phone,
+                     const QDate &datebirth,
+                     const QString &sex,
+                     const QString &certificate,
+                     const QString &position,
+                     const QString &teach,
+                     const QString &fieldofstudy);
 
 private:
     QDate DateOfBirth(const mongo::BSONElement& datebirth);
