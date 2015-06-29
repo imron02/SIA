@@ -50,22 +50,25 @@ HEADERS  +=\
 FORMS    +=
 
 win32:CONFIG(release, debug|release): LIBS += \
-    -LD:/Aplikasi/MongoDB/mongo-lib/lib/ -llibmongoclient \
-    -LC:/boost/lib/ -llibboost_thread-vc120-mt-1_57 \
-    -LC:/boost/lib/ -llibboost_system-vc120-mt-1_57 \
-    -LC:/boost/lib/ -llibboost_date_time-vc120-mt-1_57 \
-    -LC:/boost/lib/ -llibboost_chrono-vc120-mt-1_57
+    -LF:/workspaces/mongo-install/lib/ -llibmongoclient \
+    -LF:/Data/Software/Mongodb/boost_1_58_0/stage/lib/ -llibboost_thread-vc120-mt-1_58 \
+    -LF:/Data/Software/Mongodb/boost_1_58_0/stage/lib/ -llibboost_system-vc120-mt-1_58 \
+    -LF:/Data/Software/Mongodb/boost_1_58_0/stage/lib/ -llibboost_date_time-vc120-mt-1_58 \
+    -LF:/Data/Software/Mongodb/boost_1_58_0/stage/lib/ -llibboost_chrono-vc120-mt-1_58
 else:win32:CONFIG(debug, debug|release): LIBS += \
-    -LD:/Aplikasi/MongoDB/mongo-lib/lib/ -llibmongoclient-gd \
-    -LC:/boost/lib/ -llibboost_thread-vc120-mt-gd-1_57 \
-    -LC:/boost/lib/ -llibboost_system-vc120-mt-gd-1_57 \
-    -LC:/boost/lib/ -llibboost_date_time-vc120-mt-gd-1_57 \
-    -LC:/boost/lib/ -llibboost_chrono-vc120-mt-gd-1_57
+    -LF:/workspaces/mongo-install/lib/ -llibmongoclient-gd \
+    -LF:/Data/Software/Mongodb/boost_1_58_0/stage/lib/ -llibboost_thread-vc120-mt-gd-1_58 \
+    -LF:/Data/Software/Mongodb/boost_1_58_0/stage/lib/ -llibboost_system-vc120-mt-gd-1_58 \
+    -LF:/Data/Software/Mongodb/boost_1_58_0/stage/lib/ -llibboost_date_time-vc120-mt-gd-1_58 \
+    -LF:/Data/Software/Mongodb/boost_1_58_0/stage/lib/ -llibboost_chrono-vc120-mt-gd-1_58
 
 win32:INCLUDEPATH += \
-    D:/Aplikasi/MongoDB/mongo-lib/include \
-    C:/boost/include/boost-1_57 \
+    F:/workspaces/mongo-install/include \
+    F:/Data/Software/Mongodb/boost_1_58_0 \
     $$PWD/
 win32:DEPENDPATH += \
-    D:/Aplikasi/MongoDB/mongo-lib/include \
-    C:/boost/include/boost-1_57
+    F:/workspaces/mongo-install/include \
+    F:/Data/Software/Mongodb/boost_1_58_0
+
+# Disable warning
+win32:CONFIG += warn_off
