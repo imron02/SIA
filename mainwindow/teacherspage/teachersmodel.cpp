@@ -82,6 +82,36 @@ QAbstractItemModel* TeachersModel::CreateTeacherModel(QObject* parent)
         }
 
     return model;
+//    model->dataChanged(model->index(0,0), model->index(model->rowCount()-1, 0));
+}
+
+void TeachersModel::SaveTeacher(const QString &induk_no,
+                                const QString &name,
+                                const QString &phone,
+                                const QDate &datebirth,
+                                const QString &sex,
+                                const QString &certificate,
+                                const QString &position,
+                                const QString &teach,
+                                const QString &fieldofstudy)
+{
+    #ifdef Q_OS_WIN
+        client::initialize();
+    #endif // Q_OS_WIN
+
+    c.connect("localhost");
+    BSONObjBuilder b;
+    b.append("induk_no", induk_no.toStdString());
+    b.append("name", name.toStdString());
+    b.append("phone", phone.toStdString());
+    b.appendDate("datebirth", QDateTime(datebirth).toMSecsSinceEpoch());
+    b.append("sex", sex.toStdString());
+    b.append("certificate", certificate.toStdString());
+    b.append("position", position.toStdString());
+    b.append("teach", teach.toStdString());
+    b.append("fieldofstudy", fieldofstudy.toStdString());
+    BSONObj p = b.obj();
+    c.insert("sia.teachers", p);
 }
 
 void TeachersModel::SaveTeacher(const QString &induk_no,

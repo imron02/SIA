@@ -14,6 +14,8 @@
 #include <QAbstractItemModel>
 #include <QString>
 #include <QTime>
+#include <QDate>
+#include <QDateTime>
 
 // MongoDB Connection
 #ifdef Q_OS_WIN

@@ -13,6 +13,7 @@
 #include "mainwindow/main_window.h"
 #include "mainwindow/homepage/home.h"
 #include "mainwindow/teacherspage/teachers.h"
+#include <cstdint>
 
 MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent) {
   setAttribute(Qt::WA_DeleteOnClose);
