@@ -105,20 +105,6 @@ void CrudTeacher::SetLayout()
 
 void CrudTeacher::OnAdd()
 {
-<<<<<<< HEAD
-    TeachersModel *teachersModel = new TeachersModel;
-    teachersModel->SaveTeacher(noIndukLineEdit_->text(),
-                               nameLineEdit_->text(),
-                               tlpLineEdit_->text(),
-                               QDate::fromString(tglLineEdit_->text(), "d-M-yyyy"),
-                               sexComboBox_->itemData(sexComboBox_->currentIndex()).toString(),
-                               certificateLineEdit_->text(),
-                               positionLineEdit_->text(),
-                               teachLineEdit_->text(),
-                               fieldofstudyLineEdit_->text());
-//    qDebug() << sexComboBox_->itemData(sexComboBox_->currentIndex()).toString();
-//    qDebug() << tglLineEdit_->text();
-=======
     if(noIndukLineEdit_->text().isEmpty()) {
         QMessageBox::information(this, tr("Peringatan!"), "Nomor induk tidak boleh kosong");
         return;
@@ -136,11 +122,11 @@ void CrudTeacher::OnAdd()
                                    teachLineEdit_->text(),
                                    fieldofstudyLineEdit_->text());
         QMessageBox::information(this, tr("Info!"), "Data berhasil di tambahkan");
+        //    qDebug() << sexComboBox_->itemData(sexComboBox_->currentIndex()).toString();
+        //    qDebug() << tglLineEdit_->text();
     } catch (std::exception &e) {
         QMessageBox::information(this, tr("Info!"), e.what());
     }
-
->>>>>>> 988de41f10b68fac582f93e27099173760a37aee
     this->close();
 }
 
