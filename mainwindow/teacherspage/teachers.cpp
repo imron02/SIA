@@ -11,7 +11,6 @@
 #include <iostream>
 #include <exception>
 #include "mainwindow/teacherspage/teachers.h"
-#include "mainwindow/teacherspage/teachersmodel.h"
 #include "mainwindow/teacherspage/crud_teacher.h"
 
 using namespace std;
@@ -40,13 +39,17 @@ Teachers::Teachers(QWidget* parent) : QWidget(parent)
     editButton_ = new QPushButton("Edit");
     editButton_->setFixedWidth(100);
     deleteButton_ = new QPushButton("Hapus");
-    deleteButton_->setFixedWidth(100);
+    deleteButton_->setFixedWidth(80);
+    reloadButton_ = new QPushButton();
+    reloadButton_->setIcon(QIcon(":/images/reload.png"));
+    reloadButton_->setFixedWidth(20);
 
     connect(filterPatternLineEdit_, SIGNAL(textChanged(QString)),
             this, SLOT(filterRegExpChanged()));
     connect(filterColumnComboBox_, SIGNAL(currentIndexChanged(int)),
             this, SLOT(filterColumnChanged()));
     connect(addButton_, SIGNAL(clicked()), this, SLOT(addTeacher()));
+    connect(reloadButton_, SIGNAL(clicked()), this, SLOT(reloadTeacher()));
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
     QHBoxLayout *filterLayout = new QHBoxLayout;
@@ -58,13 +61,14 @@ Teachers::Teachers(QWidget* parent) : QWidget(parent)
     filterLayout->addWidget(addButton_, 4);
     filterLayout->addWidget(editButton_, 5);
     filterLayout->addWidget(deleteButton_, 6);
+    filterLayout->addWidget(reloadButton_, 7);
     sourceLayout->addWidget(proxyView_);
 
     mainLayout->addLayout(filterLayout);
     mainLayout->addLayout(sourceLayout);
     setLayout(mainLayout);
 
-    TeachersModel *teachersModel = new TeachersModel;
+    teachersModel = new TeachersModel;
     try {
         SetSourceModel(teachersModel->CreateTeacherModel(this));
     } catch (exception& e) {
@@ -94,6 +98,13 @@ void Teachers::SetSourceModel(QAbstractItemModel* model)
 {
     proxyModel_->setSourceModel(model);
     proxyView_->setColumnHidden(9, true);
+}
+
+void Teachers::reloadTeacher()
+{
+    delete teachersModel;
+    teachersModel = new TeachersModel;
+    SetSourceModel(teachersModel->CreateTeacherModel(this));
 }
 
 

@@ -12,6 +12,7 @@
 #define TEACHERS_H
 
 #include <QtWidgets>
+#include "mainwindow/teacherspage/teachersmodel.h"
 
 QT_BEGIN_NAMESPACE
 class QTreeView;
@@ -40,6 +41,7 @@ private slots:
     void filterRegExpChanged();
     void filterColumnChanged();
     void addTeacher();
+    void reloadTeacher();
 
 private:
     QSortFilterProxyModel *proxyModel_;
@@ -50,6 +52,8 @@ private:
     QPushButton *addButton_;
     QPushButton *editButton_;
     QPushButton *deleteButton_;
+    QPushButton *reloadButton_;
+    TeachersModel *teachersModel;
 };
 
 #endif // TEACHERS_H

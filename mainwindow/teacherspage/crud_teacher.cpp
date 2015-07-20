@@ -14,6 +14,7 @@
 #include <QRegExp>
 #include <QDebug>
 #include "mainwindow/teacherspage/crud_teacher.h"
+#include "mainwindow/teacherspage/teachersmodel.h"
 
 CrudTeacher::CrudTeacher(QWidget *parent) : QDialog(parent)
 {
@@ -103,7 +104,19 @@ void CrudTeacher::SetLayout()
 
 void CrudTeacher::OnAdd()
 {
-    qDebug() << sexComboBox_->itemData(sexComboBox_->currentIndex()).toString();
+    TeachersModel *teachersModel = new TeachersModel;
+    teachersModel->SaveTeacher(noIndukLineEdit_->text(),
+                               nameLineEdit_->text(),
+                               tlpLineEdit_->text(),
+                               QDate::fromString(tglLineEdit_->text(), "d-M-yyyy"),
+                               sexComboBox_->itemData(sexComboBox_->currentIndex()).toString(),
+                               certificateLineEdit_->text(),
+                               positionLineEdit_->text(),
+                               teachLineEdit_->text(),
+                               fieldofstudyLineEdit_->text());
+//    qDebug() << sexComboBox_->itemData(sexComboBox_->currentIndex()).toString();
+//    qDebug() << tglLineEdit_->text();
+    this->close();
 }
 
 void CrudTeacher::OnQuit()
