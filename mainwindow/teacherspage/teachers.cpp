@@ -49,6 +49,7 @@ Teachers::Teachers(QWidget* parent) : QWidget(parent)
     connect(filterColumnComboBox_, SIGNAL(currentIndexChanged(int)),
             this, SLOT(filterColumnChanged()));
     connect(addButton_, SIGNAL(clicked()), this, SLOT(addTeacher()));
+    connect(editButton_, SIGNAL(clicked()), this, SLOT(editTeacher()));
     connect(reloadButton_, SIGNAL(clicked()), this, SLOT(reloadTeacher()));
 
     QVBoxLayout *mainLayout = new QVBoxLayout;
@@ -70,7 +71,7 @@ Teachers::Teachers(QWidget* parent) : QWidget(parent)
 
     teachersModel = new TeachersModel;
     try {
-        SetSourceModel(teachersModel->CreateTeacherModel(this));
+        SetSourceModel("new");
     } catch (exception& e) {
         qDebug() << "Caught " << e.what();
         QMessageBox::critical(this, "Error", e.what());
@@ -88,23 +89,46 @@ void Teachers::filterColumnChanged()
     proxyModel_->setFilterKeyColumn(filterColumnComboBox_->currentIndex());
 }
 
+void Teachers::SetSourceModel(const QString &keyModel)
+{
+    if(keyModel == "new") {
+        model = teachersModel->CreateTeacherModel(this);
+    } else {
+        delete teachersModel;
+        delete model;
+        teachersModel = new TeachersModel;
+        model = teachersModel->CreateTeacherModel(this);
+    }
+    proxyModel_->setSourceModel(model);
+    proxyView_->setColumnHidden(9, true);
+}
+
 void Teachers::addTeacher()
 {
     CrudTeacher *crudTeacher = new CrudTeacher(this);
     crudTeacher->show();
 }
 
-void Teachers::SetSourceModel(QAbstractItemModel* model)
+void Teachers::editTeacher()
 {
-    proxyModel_->setSourceModel(model);
-    proxyView_->setColumnHidden(9, true);
+    QList<QVariant> teacherData;
+    QModelIndex tIndex = proxyModel_->mapToSource(proxyView_->currentIndex());
+
+    // get hidden data column
+    QModelIndex hiddenColumIndex = model->sibling(tIndex.row(), model->rowCount()+1, tIndex);
+    teacherData.append(model->data(hiddenColumIndex));
+    // get all data column
+    for(int i = 0; i < model->rowCount(); i++) {
+        QModelIndex columnIndex = model->sibling(tIndex.row(), i, tIndex);
+        teacherData.append(model->data(columnIndex));
+    }
+
+    qDebug() << teacherData;
 }
 
 void Teachers::reloadTeacher()
 {
-    delete teachersModel;
-    teachersModel = new TeachersModel;
-    SetSourceModel(teachersModel->CreateTeacherModel(this));
+    SetSourceModel("edit");
 }
 
 

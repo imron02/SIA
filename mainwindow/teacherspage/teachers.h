@@ -25,6 +25,7 @@ class QAbstractItemModel;
 class QHBoxLayout;
 class QVBoxLayout;\
 class QSortFilterProxyModel;
+class QModelIndex;
 QT_END_NAMESPACE
 
 class Teachers : public QWidget
@@ -35,12 +36,13 @@ public:
     Teachers(QWidget* parent = 0);
     ~Teachers();
 
-    void SetSourceModel(QAbstractItemModel* model);
+    void SetSourceModel(const QString &keyModel);
 
 private slots:
     void filterRegExpChanged();
     void filterColumnChanged();
     void addTeacher();
+    void editTeacher();
     void reloadTeacher();
 
 private:
@@ -54,6 +56,7 @@ private:
     QPushButton *deleteButton_;
     QPushButton *reloadButton_;
     TeachersModel *teachersModel;
+    QAbstractItemModel *model;
 };
 
 #endif // TEACHERS_H
