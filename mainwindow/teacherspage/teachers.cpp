@@ -73,7 +73,6 @@ Teachers::Teachers(QWidget* parent) : QWidget(parent)
     try {
         SetSourceModel("new");
     } catch (exception& e) {
-        qDebug() << "Caught " << e.what();
         QMessageBox::critical(this, "Error", e.what());
     }
 }
@@ -115,15 +114,26 @@ void Teachers::editTeacher()
     QModelIndex tIndex = proxyModel_->mapToSource(proxyView_->currentIndex());
 
     // get hidden data column
-    QModelIndex hiddenColumIndex = model->sibling(tIndex.row(), model->rowCount()+1, tIndex);
+    QModelIndex hiddenColumIndex = model->sibling(tIndex.row(), model->columnCount()+1, tIndex);
     teacherData.append(model->data(hiddenColumIndex));
+
     // get all data column
-    for(int i = 0; i < model->rowCount(); i++) {
+    for(int i = 0; i <= model->columnCount(); i++) {
         QModelIndex columnIndex = model->sibling(tIndex.row(), i, tIndex);
         teacherData.append(model->data(columnIndex));
     }
 
-    qDebug() << teacherData;
+    CrudTeacher *crudEditTeacher = new CrudTeacher(this);
+    crudEditTeacher->AddData(teacherData[1].toString(),
+                            teacherData[2].toString(),
+                            teacherData[3].toString(),
+                            teacherData[4].toDate(),
+                            teacherData[5].toString(),
+                            teacherData[6].toString(),
+                            teacherData[7].toString(),
+                            teacherData[8].toString(),
+                            teacherData[9].toString());
+    crudEditTeacher->show();
 }
 
 void Teachers::reloadTeacher()

@@ -122,8 +122,6 @@ void CrudTeacher::OnAdd()
                                    teachLineEdit_->text(),
                                    fieldofstudyLineEdit_->text());
         QMessageBox::information(this, tr("Info!"), "Data berhasil di tambahkan");
-        //    qDebug() << sexComboBox_->itemData(sexComboBox_->currentIndex()).toString();
-        //    qDebug() << tglLineEdit_->text();
     } catch (std::exception &e) {
         QMessageBox::information(this, tr("Info!"), e.what());
     }
@@ -133,6 +131,29 @@ void CrudTeacher::OnAdd()
 void CrudTeacher::OnQuit()
 {
     this->close();
+}
+
+void CrudTeacher::AddData(const QString &noInduk,
+                        const QString &name,
+                          const QString &tlp,
+                          const QDate &tgl,
+                          const QString &sex,
+                          const QString &certificate,
+                          const QString &position,
+                          const QString &teach,
+                          const QString &fieldofstudy)
+{
+    noIndukLineEdit_->setText(noInduk);
+    nameLineEdit_->setText(name);
+    tlpLineEdit_->setText(tlp);
+    tglLineEdit_->setText(tgl.toString("dd-MM-yyyy"));
+    sexComboBox_->setCurrentIndex(sexComboBox_->findData(sex));
+    certificateLineEdit_->setText(certificate);
+    positionLineEdit_->setText(position);
+    teachLineEdit_->setText(teach);
+    fieldofstudyLineEdit_->setText(fieldofstudy);
+
+    addButton_->setText("Update");
 }
 
 CrudTeacher::~CrudTeacher() {}

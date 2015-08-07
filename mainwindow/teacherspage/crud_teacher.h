@@ -19,6 +19,7 @@ class QLabel;
 class QLineEdit;
 class QComboBox;
 class QPushButton;
+class QDate;
 QT_END_NAMESPACE
 
 class CrudTeacher : public QDialog
@@ -28,6 +29,15 @@ class CrudTeacher : public QDialog
 public:
     CrudTeacher(QWidget *parent = 0);
     ~CrudTeacher();
+    void AddData(const QString &noInduk,
+                 const QString &name,
+                 const QString &tlp,
+                 const QDate &tgl,
+                 const QString &sex,
+                 const QString &certificate,
+                 const QString &position,
+                 const QString &teach,
+                 const QString &fieldofstudy);
 
 private slots:
     void OnAdd();

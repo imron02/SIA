@@ -80,7 +80,6 @@ QAbstractItemModel* TeachersModel::CreateTeacherModel(QObject* parent)
                    p.getStringField("fieldofstudy"),
                    QString::fromStdString(p["_id"].OID().toString()));
         }
-
     return model;
 //    model->dataChanged(model->index(0,0), model->index(model->rowCount()-1, 0));
 }
