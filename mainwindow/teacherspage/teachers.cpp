@@ -124,21 +124,22 @@ void Teachers::editTeacher()
     }
 
     CrudTeacher *crudEditTeacher = new CrudTeacher(this);
-    crudEditTeacher->AddData(teacherData[1].toString(),
-                            teacherData[2].toString(),
-                            teacherData[3].toString(),
-                            teacherData[4].toDate(),
-                            teacherData[5].toString(),
-                            teacherData[6].toString(),
-                            teacherData[7].toString(),
-                            teacherData[8].toString(),
-                            teacherData[9].toString());
+    crudEditTeacher->UpdateData(teacherData[1].toString(),
+                                teacherData[2].toString(),
+                                teacherData[3].toString(),
+                                teacherData[4].toDate(),
+                                teacherData[5].toString(),
+                                teacherData[6].toString(),
+                                teacherData[7].toString(),
+                                teacherData[8].toString(),
+                                teacherData[9].toString(),
+                                teacherData[10].toString());
     crudEditTeacher->show();
 }
 
 void Teachers::reloadTeacher()
 {
-    SetSourceModel("edit");
+    SetSourceModel("reloadr");
 }
 
 

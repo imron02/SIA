@@ -105,25 +105,42 @@ void CrudTeacher::SetLayout()
 
 void CrudTeacher::OnAdd()
 {
-    if(noIndukLineEdit_->text().isEmpty()) {
-        QMessageBox::information(this, tr("Peringatan!"), "Nomor induk tidak boleh kosong");
-        return;
-    }
     // Save data to database
     TeachersModel *teachersModel = new TeachersModel;
-    try {
-        teachersModel->SaveTeacher(noIndukLineEdit_->text(),
-                                   nameLineEdit_->text(),
-                                   tlpLineEdit_->text(),
-                                   QDate::fromString(tglLineEdit_->text(), "dd-MM-yyyy"),
-                                   sexComboBox_->itemData(sexComboBox_->currentIndex()).toString(),
-                                   certificateLineEdit_->text(),
-                                   positionLineEdit_->text(),
-                                   teachLineEdit_->text(),
-                                   fieldofstudyLineEdit_->text());
-        QMessageBox::information(this, tr("Info!"), "Data berhasil di tambahkan");
-    } catch (std::exception &e) {
-        QMessageBox::information(this, tr("Info!"), e.what());
+
+    QString buttonText = addButton_->text().toLower();
+    if(buttonText == "update")  {
+//        qDebug() << noIndukLineEdit_->text();
+        teachersModel->UpdateTeacher(id_,
+                                     noIndukLineEdit_->text(),
+                                     nameLineEdit_->text(),
+                                     tlpLineEdit_->text(),
+                                     QDate::fromString(tglLineEdit_->text(), "dd-MM-yyyy"),
+                                     sexComboBox_->itemData(sexComboBox_->currentIndex()).toString(),
+                                     certificateLineEdit_->text(),
+                                     positionLineEdit_->text(),
+                                     teachLineEdit_->text(),
+                                     fieldofstudyLineEdit_->text());
+        QMessageBox::information(this, tr("Info!"), "Data berhasil di update");
+    } else {
+        if(noIndukLineEdit_->text().isEmpty()) {
+            QMessageBox::information(this, tr("Peringatan!"), "Nomor induk tidak boleh kosong");
+            return;
+        }
+        try {
+            teachersModel->SaveTeacher(noIndukLineEdit_->text(),
+                                       nameLineEdit_->text(),
+                                       tlpLineEdit_->text(),
+                                       QDate::fromString(tglLineEdit_->text(), "dd-MM-yyyy"),
+                                       sexComboBox_->itemData(sexComboBox_->currentIndex()).toString(),
+                                       certificateLineEdit_->text(),
+                                       positionLineEdit_->text(),
+                                       teachLineEdit_->text(),
+                                       fieldofstudyLineEdit_->text());
+            QMessageBox::information(this, tr("Info!"), "Data berhasil di tambahkan");
+        } catch (std::exception &e) {
+            QMessageBox::information(this, tr("Info!"), e.what());
+        }
     }
     this->close();
 }
@@ -133,15 +150,16 @@ void CrudTeacher::OnQuit()
     this->close();
 }
 
-void CrudTeacher::AddData(const QString &noInduk,
-                        const QString &name,
-                          const QString &tlp,
-                          const QDate &tgl,
-                          const QString &sex,
-                          const QString &certificate,
-                          const QString &position,
-                          const QString &teach,
-                          const QString &fieldofstudy)
+void CrudTeacher::UpdateData(const QString &noInduk,
+                             const QString &name,
+                             const QString &tlp,
+                             const QDate &tgl,
+                             const QString &sex,
+                             const QString &certificate,
+                             const QString &position,
+                             const QString &teach,
+                             const QString &fieldofstudy,
+                             const QString &id)
 {
     noIndukLineEdit_->setText(noInduk);
     nameLineEdit_->setText(name);
@@ -152,6 +170,9 @@ void CrudTeacher::AddData(const QString &noInduk,
     positionLineEdit_->setText(position);
     teachLineEdit_->setText(teach);
     fieldofstudyLineEdit_->setText(fieldofstudy);
+
+    //set mongoid
+    id_ = id;
 
     addButton_->setText("Update");
 }

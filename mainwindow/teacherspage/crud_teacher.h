@@ -29,7 +29,7 @@ class CrudTeacher : public QDialog
 public:
     CrudTeacher(QWidget *parent = 0);
     ~CrudTeacher();
-    void AddData(const QString &noInduk,
+    void UpdateData(const QString &noInduk,
                  const QString &name,
                  const QString &tlp,
                  const QDate &tgl,
@@ -37,7 +37,8 @@ public:
                  const QString &certificate,
                  const QString &position,
                  const QString &teach,
-                 const QString &fieldofstudy);
+                 const QString &fieldofstudy,
+                 const QString &id);
 
 private slots:
     void OnAdd();
@@ -67,6 +68,7 @@ private:
     QLineEdit *fieldofstudyLineEdit_;
     QPushButton *addButton_;
     QPushButton *cancelButton_;
+    QString id_;
 };
 
 #endif // CRUD_TEACHER

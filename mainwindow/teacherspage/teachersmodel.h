@@ -38,6 +38,16 @@ public:
                     const QString &position,
                     const QString &teach,
                     const QString &fieldofstudy);
+    void UpdateTeacher(const QString &id,
+                       const QString &induk_no,
+                       const QString &name,
+                       const QString &phone,
+                       const QDate &datebirth,
+                       const QString &sex,
+                       const QString &certificate,
+                       const QString &position,
+                       const QString &teach,
+                       const QString &fieldofstudy);
 
 private:
     QDate DateOfBirth(const mongo::BSONElement& datebirth);

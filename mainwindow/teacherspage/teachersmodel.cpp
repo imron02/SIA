@@ -113,4 +113,35 @@ void TeachersModel::SaveTeacher(const QString &induk_no,
     c.insert("sia.teachers", p);
 }
 
+void TeachersModel::UpdateTeacher(const QString &id,
+                                  const QString &induk_no,
+                                  const QString &name,
+                                  const QString &phone,
+                                  const QDate &datebirth,
+                                  const QString &sex,
+                                  const QString &certificate,
+                                  const QString &position,
+                                  const QString &teach,
+                                  const QString &fieldofstudy)
+{
+    #ifdef Q_OS_WIN
+        client::initialize();
+    #endif // Q_OS_WIN
+
+    c.connect("localhost");
+
+    //update db
+    c.update("sia.teachers",QUERY("_id" << OID(id.toStdString())),
+             BSON("$set" << BSON("induk_no" << induk_no.toStdString()
+                         << "name" << name.toStdString()
+                         << "phone" << phone.toStdString()
+                         << "datebirth" << QDateTime(datebirth).toMSecsSinceEpoch()
+                         << "sex" << sex.toStdString()
+                         << "certificate" << certificate.toStdString()
+                         << "position" << position.toStdString()
+                         << "teach" << teach.toStdString()
+                         << "fieldofstudy" << fieldofstudy.toStdString())
+            ));
+}
+
 TeachersModel::~TeachersModel() {}
